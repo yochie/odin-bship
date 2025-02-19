@@ -1,8 +1,10 @@
 import Ship from "./ship.js";
 
 describe("ship", () => {
-  test("exists", () => {
+  test("api exists", () => {
     expect(Ship).toBeDefined();
+    expect(Ship.prototype.hit).toBeDefined();
+    expect(Ship.prototype.isSunk).toBeDefined();
   });
 
   test("ship not sunk by default", () => {
