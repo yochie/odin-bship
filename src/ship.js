@@ -8,6 +8,9 @@ export default class Ship {
   }
 
   hit() {
+    if (this.isSunk()) {
+      throw new Error("Ship is already sunk. You shouldn't be able to hit it.");
+    }
     this.#hitCount++;
   }
 

@@ -17,4 +17,10 @@ describe("ship", () => {
     someShip.hit();
     expect(someShip.isSunk()).toBeTruthy();
   });
+
+  test("ship throws when hit while sunk", () => {
+    let someShip = new Ship(1);
+    someShip.hit();
+    expect(() => someShip.hit()).toThrow();
+  });
 });
