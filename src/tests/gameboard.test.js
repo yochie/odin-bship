@@ -37,7 +37,7 @@ describe("Gameboard", () => {
     expect(() => gb.placeShip({ x: 0, y: 0 }, 11, true)).toThrow("bounds");
   });
 
-  test("aborted ship placement clears hasShip state", () => {
+  test("aborted ship placement clears board state", () => {
     expect(() => gb.placeShip({ x: 0, y: 0 }, 11, true)).toThrow("bounds");
     expect(gb.boardHasShip[0][0]).toBeFalsy();
   });
@@ -58,7 +58,7 @@ describe("Gameboard", () => {
 
   //note we do not test that ship is actually hit
   //I consider this is an internal side effect
-  //this will be tested indirectly when ensuring all shits are sunk
+  //this will be tested indirectly when ensuring all ships are sunk
   test("landing attacks are recorded", () => {
     gb.placeShip({ x: 0, y: 0 }, 2, false);
     gb.receiveAttack({ x: 0, y: 0 });
