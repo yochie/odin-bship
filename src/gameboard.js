@@ -15,12 +15,12 @@ export default class Gameboard {
   //list of ships on board without positions
   #ships;
 
-  maxX;
-  maxY;
+  width;
+  height;
 
   constructor(width, height) {
-    this.maxX = width - 1;
-    this.maxY = height - 1;
+    this.width = width;
+    this.height = height;
     this.boardHasShip = [];
     this.boardHits = [];
     this.#boardShips = [];
@@ -91,11 +91,11 @@ export default class Gameboard {
   }
 
   #isOnBoard(x, y) {
-    if (x < 0 || x > this.maxX) {
+    if (x < 0 || x >= this.width) {
       return false;
     }
 
-    if (y < 0 || y > this.maxY) {
+    if (y < 0 || y >= this.height) {
       return false;
     }
 

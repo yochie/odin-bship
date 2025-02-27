@@ -12,8 +12,8 @@ describe("Gameboard", () => {
     expect(gb.placeShip).toBeDefined();
     expect(gb.receiveAttack).toBeDefined();
     expect(gb.isFullySunk).toBeDefined();
-    expect(gb.maxX).toBeDefined();
-    expect(gb.maxY).toBeDefined();
+    expect(gb.width).toBeDefined();
+    expect(gb.height).toBeDefined();
     expect(gb.boardHits).toBeDefined();
     expect(gb.boardHasShip).toBeDefined();
   });
