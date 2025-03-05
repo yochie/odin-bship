@@ -37,3 +37,25 @@ img {
 }
 
 /* Normalize end */
+:root {
+  --rows: 10;
+  --cols: 10;
+}
+
+.gameboards {
+  display: flex;
+  justify-content: space-around;
+  gap: 50px;
+  margin: 50px;
+}
+.gameboard {
+  width: 40%;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-rows: repeat(var(--rows), 1fr);
+  grid-template-columns: repeat(var(--cols), 1fr);
+}
+.gameboard .board-cell {
+  text-align: center;
+  border: solid black 1px;
+}
