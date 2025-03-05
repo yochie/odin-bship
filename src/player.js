@@ -1,8 +1,12 @@
 export default class Player {
-  gameboard;
+  gameBoard;
   isBot;
-  constructor(gameboard, isBot = false) {
-    this.gameboard = gameboard;
+  constructor(gameBoard, isBot = false) {
+    this.gameBoard = gameBoard;
     this.isBot = isBot;
+  }
+
+  isDead() {
+    return this.gameBoard.isFullySunk();
   }
 }
