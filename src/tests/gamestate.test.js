@@ -42,5 +42,5 @@ describe("game state", () => {
   });
 
   //todo: add test for attacking same position twice
-  //using mock or complex state manip... prob mock is better
+  //using mock or complex state setup... prob mock is better
 });
