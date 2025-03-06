@@ -3,6 +3,8 @@ import TurnTracker from "../turntracker.js";
 import PlayerManager from "../playermanager.js";
 import Player from "../player.js";
 import GameBoard from "../gameboard.js";
+import DumbAI from "../dumbai.js";
+import AutomatedPlayer from "../automatedplayer.js";
 
 function createDefaultGameState() {
   const boardSize = 10;
@@ -28,7 +30,10 @@ function createDefaultGameState() {
   playerManager.addPlayer(player1);
   playerManager.addPlayer(player2);
 
-  const gameState = new GameState(turnTracker, playerManager);
+  let ai = new DumbAI();
+  let automatedPlayer = new AutomatedPlayer(ai);
+
+  const gameState = new GameState(turnTracker, playerManager, automatedPlayer);
   return gameState;
 }
 

@@ -1,10 +1,12 @@
 export default class GameState {
   turnTracker;
   playerManager;
+  #automatedPlayer;
 
-  constructor(turnTracker, playerManager) {
+  constructor(turnTracker, playerManager, automatedPlayer) {
     this.turnTracker = turnTracker;
     this.playerManager = playerManager;
+    this.#automatedPlayer = automatedPlayer;
   }
 
   start() {
@@ -53,6 +55,29 @@ export default class GameState {
     return this.turnTracker.isGameStarted();
   }
 
+  //returns true on success, false on failure
+  endTurn() {
+    if (!this.turnTracker.isGameStarted()) {
+      //cannot end turn before game start
+      return false;
+    }
+
+    if (!this.turnTracker.isAttackDone()) {
+      //force attacking
+      return false;
+    }
+
+    this.turnTracker.swapTurn();
+
+    const nextPlayerID = this.turnTracker.activePlayer();
+    const nextPlayer = this.playerManager.getPlayer(nextPlayerID);
+    if (nextPlayer.isBot) {
+      this.#automatedPlayer.playTurn(this);
+    }
+
+    return true;
+  }
+
   #isAttackingAllowed() {
     if (!this.turnTracker.isGameStarted()) {
       return false;
@@ -61,5 +86,17 @@ export default class GameState {
       return false;
     }
     return true;
+  }
+
+  activePlayer() {
+    const activePlayerID = this.turnTracker.activePlayer();
+    const activePlayer = this.playerManager.getPlayer(activePlayerID);
+    return activePlayer;
+  }
+
+  inactivePlayer() {
+    const inactivePlayerID = this.turnTracker.inactivePlayer();
+    const inactivePlayer = this.playerManager.getPlayer(inactivePlayerID);
+    return inactivePlayer;
   }
 }
