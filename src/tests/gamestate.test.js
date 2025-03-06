@@ -69,7 +69,7 @@ describe("game state", () => {
 
   test("end turn succeeds under normal conditions", () => {
     gameState.start();
-    gameState.attack(zero);
+    gameState.attack({ x: 1, y: 0 });
     let result = gameState.endTurn();
     expect(result).toBeTruthy();
   });
@@ -78,7 +78,7 @@ describe("game state", () => {
   //state is more complex should be validated elsewhere
   test("end turn calls turn swap on turnTracker", () => {
     gameState.start();
-    gameState.attack(zero);
+    gameState.attack({ x: 1, y: 0 });
     gameState.endTurn();
 
     expect(swapSpy).toHaveBeenCalled();
@@ -86,7 +86,7 @@ describe("game state", () => {
 
   test("end turn calls ai for bot players", () => {
     gameState.start();
-    gameState.attack(zero);
+    gameState.attack({ x: 1, y: 0 });
     gameState.endTurn();
 
     expect(aiSpy).toHaveBeenCalled();
