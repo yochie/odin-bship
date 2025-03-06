@@ -20,12 +20,12 @@ export default class BoardView {
         cell.setAttribute("data-y", y);
 
         if (this.#forActivePlayer) {
-          cell.style.backgroundColor = board.boardHasShip[x][y]
+          cell.style.backgroundColor = board.hasShipAt({ x, y })
             ? "black"
             : "light-blue";
         }
 
-        switch (board.boardHits[x][y]) {
+        switch (board.hitAt({ x, y })) {
           case "hit":
             cell.textContent = "X";
             break;
