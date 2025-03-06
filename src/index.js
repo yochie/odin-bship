@@ -13,17 +13,19 @@ const gameState = createDefaultGameState();
 const activeBoardView = new BoardView("active-board", true);
 const inactiveBoardView = new BoardView("opponent-board", false);
 const startButton = document.querySelector(".start-button");
+const endTurnButton = document.querySelector(".end-turn-button");
+const gameOverNode = document.querySelector(".game-over");
 
 const uiManager = new UIManager(
   activeBoardView,
   inactiveBoardView,
   startButton,
+  endTurnButton,
+  gameOverNode,
 );
 
 const inputHandler = new InputHandler(gameState, uiManager);
 
 uiManager.update(gameState);
-
-gameState.sta;
 
 console.log("hello");

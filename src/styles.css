@@ -59,3 +59,7 @@ img {
   text-align: center;
   border: solid black 1px;
 }
+
+.game-over {
+  display: none;
+}

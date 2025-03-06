@@ -10,6 +10,7 @@ export default class InputHandler {
 
     this.uiManager.addAttackHandler((event) => this.handleAttack(event));
     this.uiManager.addStartHandler((event) => this.handleStart(event));
+    this.uiManager.addEndTurnHandler((event) => this.handleEndTurn(event));
   }
 
   handleAttack(event) {
@@ -27,6 +28,15 @@ export default class InputHandler {
 
   handleStart(event) {
     this.gameState.start();
+    this.uiManager.update(this.gameState);
+  }
+
+  handleEndTurn(envent) {
+    const success = this.gameState.endTurn();
+    if (!success) {
+      return;
+    }
+
     this.uiManager.update(this.gameState);
   }
 }

@@ -1,26 +1,42 @@
 import BoardView from "./boardview.js";
 
 export default class UIManager {
-  playerBoardView;
-  opponentBoardView;
-  startButton;
+  #playerBoardView;
+  #opponentBoardView;
+  #startButton;
+  #endTurnButton;
 
   #attackHandlers;
   #startHandlers;
+  #endTurnHandlers;
+  #gameOverNode;
 
-  constructor(playerBoardView, opponentBoardView, startButton) {
-    this.playerBoardView = playerBoardView;
-    this.opponentBoardView = opponentBoardView;
-    this.startButton = startButton;
+  constructor(
+    playerBoardView,
+    opponentBoardView,
+    startButton,
+    endTurnButton,
+    gameOverNode,
+  ) {
+    this.#playerBoardView = playerBoardView;
+    this.#opponentBoardView = opponentBoardView;
+    this.#startButton = startButton;
+    this.#endTurnButton = endTurnButton;
+    this.#gameOverNode = gameOverNode;
     this.#attackHandlers = [];
     this.#startHandlers = [];
+    this.#endTurnHandlers = [];
 
-    this.opponentBoardView.container.addEventListener("click", (event) => {
+    this.#opponentBoardView.container.addEventListener("click", (event) => {
       this.onAttack(event);
     });
 
-    this.startButton.addEventListener("click", (event) =>
+    this.#startButton.addEventListener("click", (event) =>
       this.onStartGame(event),
+    );
+
+    this.#endTurnButton.addEventListener("click", (event) =>
+      this.onEndTurn(event),
     );
   }
 
@@ -30,6 +46,10 @@ export default class UIManager {
 
   addStartHandler(callback) {
     this.#startHandlers.push(callback);
+  }
+
+  addEndTurnHandler(callback) {
+    this.#endTurnHandlers.push(callback);
   }
 
   onAttack(event) {
@@ -42,7 +62,14 @@ export default class UIManager {
   }
 
   onStartGame(event) {
+    this.gameOverDisplay(false);
     for (const handler of this.#startHandlers) {
+      handler(event);
+    }
+  }
+
+  onEndTurn(event) {
+    for (const handler of this.#endTurnHandlers) {
       handler(event);
     }
   }
@@ -53,10 +80,18 @@ export default class UIManager {
 
     let activePlayerIndex = turnTracker.activePlayer();
     let activePlayerBoard = players.getPlayer(activePlayerIndex).gameBoard;
-    this.playerBoardView.render(activePlayerBoard);
+    this.#playerBoardView.render(activePlayerBoard);
 
     let inactivePlayerIndex = turnTracker.inactivePlayer();
     let inactivePlayerBoard = players.getPlayer(inactivePlayerIndex).gameBoard;
-    this.opponentBoardView.render(inactivePlayerBoard);
+    this.#opponentBoardView.render(inactivePlayerBoard);
+
+    if (players.isGameOver()) {
+      this.gameOverDisplay(true);
+    }
+  }
+
+  gameOverDisplay(over) {
+    this.#gameOverNode.style.display = over ? "block" : "none";
   }
 }
