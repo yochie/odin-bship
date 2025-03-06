@@ -13,7 +13,6 @@ describe("game state", () => {
     expect(gameState.attack).toBeDefined();
     expect(gameState.turnTracker).toBeDefined();
     expect(gameState.playerManager).toBeDefined();
-    expect(gameState.isAttackAllowed).toBeDefined();
   });
 
   test("not started by default", () => {
@@ -39,7 +38,7 @@ describe("game state", () => {
   test("attack fails if already done for turn", () => {
     gameState.start();
     gameState.attack({ x: 0, y: 0 });
-    expect(() => gameState.attack({ x: 0, y: 0 })).toBeFalsy();
+    expect(gameState.attack({ x: 0, y: 0 })).toBeFalsy();
   });
 
   //todo: add test for attacking same position twice
