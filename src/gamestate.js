@@ -74,8 +74,7 @@ export default class GameState {
 
     this.turnTracker.swapTurn();
 
-    const nextPlayerID = this.turnTracker.activePlayer();
-    const nextPlayer = this.playerManager.getPlayer(nextPlayerID);
+    const nextPlayer = this.activePlayer();
     if (nextPlayer.isBot) {
       this.#automatedPlayer.playTurn(this);
     }
