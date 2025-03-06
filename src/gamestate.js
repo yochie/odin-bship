@@ -67,6 +67,11 @@ export default class GameState {
       return false;
     }
 
+    if (this.playerManager.isGameOver()) {
+      //cant end turn, need to restart
+      return false;
+    }
+
     this.turnTracker.swapTurn();
 
     const nextPlayerID = this.turnTracker.activePlayer();

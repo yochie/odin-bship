@@ -59,6 +59,14 @@ describe("game state", () => {
     expect(gameState.endTurn()).toBeFalsy();
   });
 
+  test("end turn fails if game over", () => {
+    gameState.start();
+    //should end game as its only ship by default
+    gameState.attack({ x: 0, y: 0 });
+
+    expect(gameState.endTurn()).toBeFalsy();
+  });
+
   test("end turn succeeds under normal conditions", () => {
     gameState.start();
     gameState.attack(zero);
