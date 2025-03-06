@@ -2,17 +2,13 @@ import Ship from "./ship.js";
 
 export default class Gameboard {
   //2D array
-  //indicates whether each position holds a ship or not
-  boardHasShip;
-
-  //2D array
   //indicates whether each position has been hit, missed or still untouched (null)
-  boardHits;
+  #hitPositions;
 
   //2D array pointing to ships at each position
-  #boardShips;
+  #shipPositions;
 
-  //list of ships on board without positions
+  //list of ships on board
   #ships;
 
   width;
@@ -21,19 +17,16 @@ export default class Gameboard {
   constructor(width, height) {
     this.width = width;
     this.height = height;
-    this.boardHasShip = [];
-    this.boardHits = [];
-    this.#boardShips = [];
+    this.#hitPositions = [];
+    this.#shipPositions = [];
     this.#ships = [];
 
     for (let x = 0; x < width; x++) {
-      this.boardHasShip[x] = [];
-      this.boardHits[x] = [];
-      this.#boardShips[x] = [];
+      this.#shipPositions[x] = [];
+      this.#hitPositions[x] = [];
       for (let y = 0; y < height; y++) {
-        this.boardHasShip[x][y] = false;
-        this.boardHits[x][y] = null;
-        this.#boardShips[x][y] = null;
+        this.#shipPositions[x][y] = null;
+        this.#hitPositions[x][y] = null;
       }
     }
   }
@@ -49,7 +42,7 @@ export default class Gameboard {
         throw new Error("Ship is out of bounds");
       }
 
-      if (this.boardHasShip[x][y]) {
+      if (this.#shipPositions[x][y]) {
         throw new Error("Cannot place overlapping ships");
       }
     }
@@ -60,8 +53,7 @@ export default class Gameboard {
     for (let offset = 0; offset < length; offset++) {
       const x = isVertical ? startX : startX + offset;
       const y = isVertical ? startY + offset : startY;
-      this.boardHasShip[x][y] = true;
-      this.#boardShips[x][y] = ship;
+      this.#shipPositions[x][y] = ship;
     }
 
     this.#ships.push(ship);
@@ -69,15 +61,15 @@ export default class Gameboard {
 
   receiveAttack(position) {
     const { x, y } = position;
-    if (this.boardHits[x][y] !== null) {
+    if (this.#hitPositions[x][y] !== null) {
       throw new Error("Cannot attack same position twice");
     }
 
-    if (this.boardHasShip[x][y]) {
-      this.boardHits[x][y] = "hit";
-      this.#boardShips[x][y].hit();
+    if (this.#shipPositions[x][y]) {
+      this.#hitPositions[x][y] = "hit";
+      this.#shipPositions[x][y].hit();
     } else {
-      this.boardHits[x][y] = "miss";
+      this.#hitPositions[x][y] = "miss";
     }
   }
 
@@ -100,5 +92,13 @@ export default class Gameboard {
     }
 
     return true;
+  }
+
+  hitAt(position) {
+    return this.#hitPositions[position.x][position.y];
+  }
+
+  hasShipAt(position) {
+    return this.#shipPositions[position.x][position.y] !== null;
   }
 }

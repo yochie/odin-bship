@@ -43,4 +43,9 @@ describe("game state", () => {
 
   //todo: add test for attacking same position twice
   //using mock or complex state setup... prob mock is better
+  // test("attack fails on already attacked tile", () => {
+  //   gameState.start();
+  //   gameState.attack({ x: 0, y: 0 });
+
+  // });
 });

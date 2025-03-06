@@ -38,7 +38,7 @@ export default class GameState {
     const inactivePlayerId = this.turnTracker.inactivePlayer();
     const inactivePlayer = this.playerManager.getPlayer(inactivePlayerId);
     const inactivePlayerGameBoard = inactivePlayer.gameBoard;
-    if (inactivePlayerGameBoard.boardHits[position.x][position.y] !== null) {
+    if (inactivePlayerGameBoard.hitAt(position) !== null) {
       //prevent attacking same tile
       //not throwing as this is expected to occur
       return false;
