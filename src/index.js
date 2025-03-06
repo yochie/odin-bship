@@ -7,9 +7,12 @@ import TurnTracker from "./turntracker.js";
 import PlayerManager from "./playermanager.js";
 import Player from "./player.js";
 import GameBoard from "./gameboard.js";
-import { createDefaultGameState } from "./tests/mother.js";
+import {
+  createDefaultGameState,
+  createDefaultGameStateWithoutBots,
+} from "./tests/mother.js";
 
-const gameState = createDefaultGameState();
+const gameState = createDefaultGameStateWithoutBots();
 const activeBoardView = new BoardView("active-board", true);
 const inactiveBoardView = new BoardView("opponent-board", false);
 const startButton = document.querySelector(".start-button");
