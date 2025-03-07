@@ -3,11 +3,16 @@ import BoardView from "./boardview.js";
 export default class UIManager {
   #playerBoardView;
   #opponentBoardView;
+
+  //buttons
   #startButton;
   #endTurnButton;
+  #resetButton;
+
+  //containers
   #gameOverNode;
   #gameStartNode;
-  #resetButton;
+  #instructionNode;
 
   #attackHandlers;
   #startHandlers;
@@ -22,6 +27,7 @@ export default class UIManager {
     gameOverNode,
     resetButton,
     gameStartNode,
+    instructionNode,
   ) {
     //dom buttons
     this.#startButton = startButton;
@@ -31,6 +37,7 @@ export default class UIManager {
     //dom containers
     this.#gameOverNode = gameOverNode;
     this.#gameStartNode = gameStartNode;
+    this.#instructionNode = instructionNode;
 
     //dom view/managers
     this.#playerBoardView = playerBoardView;
@@ -88,17 +95,20 @@ export default class UIManager {
       handler(event);
     }
     this.gameStartDisplay(false);
+    this.instructionDisplay(false);
   }
 
   onEndTurn(event) {
     for (const handler of this.#endTurnHandlers) {
       handler(event);
     }
+    this.instructionDisplay(false);
   }
 
   onReset(event) {
     this.gameStartDisplay(true);
     this.gameOverDisplay(false);
+    this.instructionDisplay(false);
     for (const handler of this.#resetHandlers) {
       handler(event);
     }
@@ -119,6 +129,12 @@ export default class UIManager {
     if (players.isGameOver()) {
       this.gameOverDisplay(true);
     }
+
+    this.instructionDisplay(
+      turnTracker.isAttackDone(),
+      players.isGameOver(),
+      inactivePlayerBoard.lastAttackLanded(),
+    );
   }
 
   gameOverDisplay(over) {
@@ -127,5 +143,24 @@ export default class UIManager {
 
   gameStartDisplay(show) {
     this.#gameStartNode.style.visibility = show ? "visible" : "hidden";
+  }
+
+  instructionDisplay(attackDone, gameOver, attackLanded = false) {
+    if (!attackDone) {
+      this.#instructionNode.textContent = "Choose target...";
+      this.#endTurnButton.style.visibility = "hidden";
+      return;
+    }
+
+    if (gameOver) {
+      this.#endTurnButton.style.visibility = "hidden";
+      this.#instructionNode.textContent = "Opponent sunk! You win.";
+      return;
+    }
+
+    this.#endTurnButton.style.visibility = "visible";
+    this.#instructionNode.textContent = attackLanded
+      ? "Its a hit!"
+      : "Attack missed.";
   }
 }

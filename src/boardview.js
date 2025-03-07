@@ -21,8 +21,10 @@ export default class BoardView {
 
         if (this.#forActivePlayer) {
           cell.style.backgroundColor = board.hasShipAt({ x, y })
-            ? "black"
-            : "light-blue";
+            ? board.hitAt({ x, y }) === "hit"
+              ? "red"
+              : "black"
+            : "blue";
         }
 
         switch (board.hitAt({ x, y })) {

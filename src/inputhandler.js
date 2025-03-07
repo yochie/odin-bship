@@ -22,13 +22,15 @@ export default class InputHandler {
 
   handleAttack(event) {
     if (!this.gameState.isGameStarted()) {
-      return;
+      return false;
     }
 
     let position = BoardView.parsePosition(event.target);
     const attackSuccess = this.gameState.attack(position);
     if (!attackSuccess) {
-      return;
+      //attacks fail if they are invalid
+      //e.g. already attacked position
+      return false;
     }
     this.uiManager.update(this.gameState);
   }

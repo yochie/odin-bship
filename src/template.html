@@ -13,12 +13,25 @@
       </p>
       <button class="start-button">Start</button>
     </div>
-    <button class="end-turn-button">End turn</button>
-    <button class="reset-button">Reset</button>
-    <div class="game-over">Game Over</div>
+    <div class="to-place">
+      <button class="reset-button">Reset</button>
+      <div class="game-over">Game Over</div>
+    </div>
     <div class="gameboards">
-      <div id="active-board" class="gameboard"></div>
-      <div id="opponent-board" class="gameboard"></div>
+      <div class="gameboard-header">
+        <h2>You</h2>
+      </div>
+      <div class="gameboard-header">
+        <h2>Opponent</h2>
+        <p class="attack-state">Choose target...</p>
+        <button class="end-turn-button">End turn</button>
+      </div>
+      <div class="gameboard-section">
+        <div id="active-board" class="gameboard"></div>
+      </div>
+      <div class="gameboard-section">
+        <div id="opponent-board" class="gameboard"></div>
+      </div>
     </div>
   </body>
 </html>

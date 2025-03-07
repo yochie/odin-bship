@@ -1,11 +1,11 @@
 import Player from "../player.js";
-import Gameboard from "../gameboard.js";
+import GameBoard from "../gameboard.js";
 
 describe("player", () => {
   let player;
 
   beforeEach(() => {
-    player = new Player(new Gameboard(10, 10), false);
+    player = new Player(new GameBoard(10, 10), false);
   });
 
   test("api", () => {

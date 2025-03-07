@@ -43,21 +43,41 @@ img {
 }
 
 .gameboards {
-  display: flex;
-  justify-content: space-around;
-  gap: 50px;
-  margin: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 20px;
+  padding: 50px;
+  height: 100vh;
 }
+
+.gameboard-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gameboard-header {
+  text-align: center;
+}
+
+.gameboard-header h2 {
+  font-weight: bold;
+  font-size: 3rem;
+}
+
 .gameboard {
-  width: 40%;
-  aspect-ratio: 1;
+  flex-grow: 1;
   display: grid;
   grid-template-rows: repeat(var(--rows), 1fr);
   grid-template-columns: repeat(var(--cols), 1fr);
 }
 .gameboard .board-cell {
-  text-align: center;
   border: solid black 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1;
 }
 
 .game-over {
@@ -65,6 +85,7 @@ img {
 }
 
 .game-start-screen {
+  z-index: 2;
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -84,4 +105,9 @@ img {
 .game-start-screen h2 {
   font-weight: bold;
   font-size: 3rem;
+}
+
+.to-place {
+  position: absolute;
+  z-index: 1;
 }

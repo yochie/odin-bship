@@ -17,6 +17,7 @@ describe("Gameboard", () => {
     expect(gb.height).toBeDefined();
     expect(gb.hitAt).toBeDefined();
     expect(gb.hasShipAt).toBeDefined();
+    expect(gb.lastAttackLanded).toBeDefined();
   });
 
   test("empty slots are indeed empty", () => {
@@ -103,5 +104,21 @@ describe("Gameboard", () => {
     gb.receiveAttack(zero);
     gb.receiveAttack({ x: 1, y: 0 });
     expect(gb.isFullySunk()).toBeTruthy();
+  });
+
+  test("last attack landed correctly recorded on hit", () => {
+    gb.placeShip(zero, 2, false);
+    gb.receiveAttack(zero);
+    expect(gb.lastAttackLanded()).toBeTruthy();
+  });
+
+  test("last attack landed correctly recorded on miss", () => {
+    gb.placeShip(zero, 2, false);
+    gb.receiveAttack({ x: 3, y: 3 });
+    expect(gb.lastAttackLanded()).toBeFalsy();
+  });
+
+  test("last attack landed false in absence of attacks", () => {
+    expect(gb.lastAttackLanded()).toBeFalsy();
   });
 });

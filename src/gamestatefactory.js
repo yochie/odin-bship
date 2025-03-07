@@ -12,6 +12,11 @@ function createPlayer(boardSize, isBot) {
   return player;
 }
 
+function createPlayerWithBoard(board, isBot) {
+  const player = new Player(board, isBot);
+  return player;
+}
+
 function createDefaultBoard(size) {
   const board = new GameBoard(size, size);
   try {
@@ -60,4 +65,32 @@ function createDefaultGameStateWithoutBots() {
   return gameState;
 }
 
-export { createDefaultGameState, createDefaultGameStateWithoutBots };
+function createRicherGameState() {
+  const boardSize = 10;
+  const turnTracker = new TurnTracker();
+  const playerManager = new PlayerManager();
+
+  let board1 = createDefaultBoard(boardSize);
+  board1.placeShip({ x: 2, y: 2 }, 1, false);
+
+  let board2 = createDefaultBoard(boardSize);
+  board2.placeShip({ x: 2, y: 2 }, 1, false);
+
+  let humanPlayer1 = createPlayerWithBoard(board1, false);
+  let humanPlayer2 = createPlayerWithBoard(board2, false);
+
+  playerManager.addPlayer(humanPlayer1);
+  playerManager.addPlayer(humanPlayer2);
+
+  let ai = new DumbAI();
+  let automatedPlayer = new AutomatedPlayer(ai);
+
+  const gameState = new GameState(turnTracker, playerManager, automatedPlayer);
+  return gameState;
+}
+
+export {
+  createDefaultGameState,
+  createDefaultGameStateWithoutBots,
+  createRicherGameState,
+};

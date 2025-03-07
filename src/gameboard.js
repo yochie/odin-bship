@@ -1,5 +1,8 @@
 import Ship from "./ship.js";
 
+const HIT = "hit";
+const MISS = "miss";
+
 export default class Gameboard {
   //2D array
   //indicates whether each position has been hit, missed or still untouched (null)
@@ -11,6 +14,8 @@ export default class Gameboard {
   //list of ships on board
   #ships;
 
+  #lastHitPosition;
+
   width;
   height;
 
@@ -20,6 +25,7 @@ export default class Gameboard {
     this.#hitPositions = [];
     this.#shipPositions = [];
     this.#ships = [];
+    this.#lastHitPosition = null;
 
     for (let x = 0; x < width; x++) {
       this.#shipPositions[x] = [];
@@ -66,11 +72,13 @@ export default class Gameboard {
     }
 
     if (this.#shipPositions[x][y]) {
-      this.#hitPositions[x][y] = "hit";
+      this.#hitPositions[x][y] = HIT;
       this.#shipPositions[x][y].hit();
     } else {
-      this.#hitPositions[x][y] = "miss";
+      this.#hitPositions[x][y] = MISS;
     }
+
+    this.#lastHitPosition = position;
   }
 
   isFullySunk() {
@@ -100,5 +108,13 @@ export default class Gameboard {
 
   hasShipAt(position) {
     return this.#shipPositions[position.x][position.y] !== null;
+  }
+
+  lastAttackLanded() {
+    const position = this.#lastHitPosition;
+    if (position === null) {
+      return false;
+    }
+    return this.#hitPositions[position.x][position.y] === HIT;
   }
 }
