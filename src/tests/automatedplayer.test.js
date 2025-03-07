@@ -1,7 +1,7 @@
 import AutomatedPlayer from "../automatedplayer";
 import DumbAI from "../dumbai";
 import GameState from "../gamestate";
-import { createDefaultGameState } from "./mother";
+import { createDefaultGameState } from "../gamestatefactory";
 
 let attackSpy = jest.spyOn(GameState.prototype, "attack");
 let endTurnSpy = jest.spyOn(GameState.prototype, "endTurn");

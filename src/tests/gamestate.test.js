@@ -1,4 +1,4 @@
-import { createDefaultGameState } from "./mother";
+import { createDefaultGameState } from "../gamestatefactory";
 import TurnTracker from "../turntracker";
 import AutomatedPlayer from "../automatedplayer";
 

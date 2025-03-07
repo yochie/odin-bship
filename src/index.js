@@ -10,7 +10,7 @@ import GameBoard from "./gameboard.js";
 import {
   createDefaultGameState,
   createDefaultGameStateWithoutBots,
-} from "./tests/mother.js";
+} from "./gamestatefactory.js";
 
 const gameState = createDefaultGameStateWithoutBots();
 const activeBoardView = new BoardView("active-board", true);
@@ -18,6 +18,7 @@ const inactiveBoardView = new BoardView("opponent-board", false);
 const startButton = document.querySelector(".start-button");
 const endTurnButton = document.querySelector(".end-turn-button");
 const gameOverNode = document.querySelector(".game-over");
+const resetButton = document.querySelector(".reset-button");
 
 const uiManager = new UIManager(
   activeBoardView,
@@ -25,6 +26,7 @@ const uiManager = new UIManager(
   startButton,
   endTurnButton,
   gameOverNode,
+  resetButton,
 );
 
 const inputHandler = new InputHandler(gameState, uiManager);

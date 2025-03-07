@@ -1,4 +1,5 @@
 import BoardView from "./boardview.js";
+import { createDefaultGameState } from "./gamestatefactory.js";
 
 export default class InputHandler {
   uiManager;
@@ -11,6 +12,7 @@ export default class InputHandler {
     this.uiManager.addAttackHandler((event) => this.handleAttack(event));
     this.uiManager.addStartHandler((event) => this.handleStart(event));
     this.uiManager.addEndTurnHandler((event) => this.handleEndTurn(event));
+    this.uiManager.addResetHandler((event) => this.handleReset(event));
   }
 
   handleAttack(event) {
@@ -37,6 +39,12 @@ export default class InputHandler {
       return;
     }
 
+    this.uiManager.update(this.gameState);
+  }
+
+  handleReset(event) {
+    //rather than mutate current gamestate, just create a whole new one
+    this.gameState = createDefaultGameState();
     this.uiManager.update(this.gameState);
   }
 }

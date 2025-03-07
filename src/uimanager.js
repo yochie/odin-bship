@@ -5,11 +5,13 @@ export default class UIManager {
   #opponentBoardView;
   #startButton;
   #endTurnButton;
+  #gameOverNode;
+  #resetButton;
 
   #attackHandlers;
   #startHandlers;
   #endTurnHandlers;
-  #gameOverNode;
+  #resetHandlers;
 
   constructor(
     playerBoardView,
@@ -17,15 +19,18 @@ export default class UIManager {
     startButton,
     endTurnButton,
     gameOverNode,
+    resetButton,
   ) {
     this.#playerBoardView = playerBoardView;
     this.#opponentBoardView = opponentBoardView;
     this.#startButton = startButton;
     this.#endTurnButton = endTurnButton;
     this.#gameOverNode = gameOverNode;
+    this.#resetButton = resetButton;
     this.#attackHandlers = [];
     this.#startHandlers = [];
     this.#endTurnHandlers = [];
+    this.#resetHandlers = [];
 
     this.#opponentBoardView.container.addEventListener("click", (event) => {
       this.onAttack(event);
@@ -38,6 +43,7 @@ export default class UIManager {
     this.#endTurnButton.addEventListener("click", (event) =>
       this.onEndTurn(event),
     );
+    this.#resetButton.addEventListener("click", (event) => this.onReset(event));
   }
 
   addAttackHandler(callback) {
@@ -50,6 +56,10 @@ export default class UIManager {
 
   addEndTurnHandler(callback) {
     this.#endTurnHandlers.push(callback);
+  }
+
+  addResetHandler(callback) {
+    this.#resetHandlers.push(callback);
   }
 
   onAttack(event) {
@@ -70,6 +80,13 @@ export default class UIManager {
 
   onEndTurn(event) {
     for (const handler of this.#endTurnHandlers) {
+      handler(event);
+    }
+  }
+
+  onReset(event) {
+    this.gameOverDisplay(false);
+    for (const handler of this.#resetHandlers) {
       handler(event);
     }
   }
