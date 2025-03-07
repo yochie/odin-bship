@@ -6,6 +6,7 @@ export default class UIManager {
   #startButton;
   #endTurnButton;
   #gameOverNode;
+  #gameStartNode;
   #resetButton;
 
   #attackHandlers;
@@ -20,13 +21,22 @@ export default class UIManager {
     endTurnButton,
     gameOverNode,
     resetButton,
+    gameStartNode,
   ) {
-    this.#playerBoardView = playerBoardView;
-    this.#opponentBoardView = opponentBoardView;
+    //dom buttons
     this.#startButton = startButton;
     this.#endTurnButton = endTurnButton;
-    this.#gameOverNode = gameOverNode;
     this.#resetButton = resetButton;
+
+    //dom containers
+    this.#gameOverNode = gameOverNode;
+    this.#gameStartNode = gameStartNode;
+
+    //dom view/managers
+    this.#playerBoardView = playerBoardView;
+    this.#opponentBoardView = opponentBoardView;
+
+    //handlers lists
     this.#attackHandlers = [];
     this.#startHandlers = [];
     this.#endTurnHandlers = [];
@@ -43,6 +53,7 @@ export default class UIManager {
     this.#endTurnButton.addEventListener("click", (event) =>
       this.onEndTurn(event),
     );
+
     this.#resetButton.addEventListener("click", (event) => this.onReset(event));
   }
 
@@ -63,6 +74,7 @@ export default class UIManager {
   }
 
   onAttack(event) {
+    //ensure this is actually an attack event
     if (!event.target.classList.contains("board-cell")) {
       return;
     }
@@ -72,10 +84,10 @@ export default class UIManager {
   }
 
   onStartGame(event) {
-    this.gameOverDisplay(false);
     for (const handler of this.#startHandlers) {
       handler(event);
     }
+    this.gameStartDisplay(false);
   }
 
   onEndTurn(event) {
@@ -85,6 +97,7 @@ export default class UIManager {
   }
 
   onReset(event) {
+    this.gameStartDisplay(true);
     this.gameOverDisplay(false);
     for (const handler of this.#resetHandlers) {
       handler(event);
@@ -110,5 +123,9 @@ export default class UIManager {
 
   gameOverDisplay(over) {
     this.#gameOverNode.style.display = over ? "block" : "none";
+  }
+
+  gameStartDisplay(show) {
+    this.#gameStartNode.style.visibility = show ? "visible" : "hidden";
   }
 }

@@ -19,6 +19,7 @@ const startButton = document.querySelector(".start-button");
 const endTurnButton = document.querySelector(".end-turn-button");
 const gameOverNode = document.querySelector(".game-over");
 const resetButton = document.querySelector(".reset-button");
+const gameStartNode = document.querySelector(".game-start-screen");
 
 const uiManager = new UIManager(
   activeBoardView,
@@ -27,6 +28,7 @@ const uiManager = new UIManager(
   endTurnButton,
   gameOverNode,
   resetButton,
+  gameStartNode,
 );
 
 const inputHandler = new InputHandler(gameState, uiManager);

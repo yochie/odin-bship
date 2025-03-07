@@ -63,3 +63,25 @@ img {
 .game-over {
   display: none;
 }
+
+.game-start-screen {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.start-button {
+  padding: 20px;
+  font-weight: bold;
+}
+
+.game-start-screen h2 {
+  font-weight: bold;
+  font-size: 3rem;
+}
