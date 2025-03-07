@@ -1,6 +1,11 @@
 import BoardView from "./boardview.js";
 import { createDefaultGameState } from "./gamestatefactory.js";
 
+//defines handlers for ui events
+//these handlers usually alter the game state in some fashion
+//they also request ui updates given the altered gamestate when applicable
+//uimanager itself is sole responsible of updating ui state in response to ui events
+//input handler should  only manage gamestate changes
 export default class InputHandler {
   uiManager;
   gameState;
