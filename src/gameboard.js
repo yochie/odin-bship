@@ -117,4 +117,8 @@ export default class Gameboard {
     }
     return this.#hitPositions[position.x][position.y] === HIT;
   }
+
+  lastHitPosition() {
+    return this.#lastHitPosition;
+  }
 }

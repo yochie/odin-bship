@@ -24,7 +24,19 @@ export default class BoardView {
             ? board.hitAt({ x, y }) === "hit"
               ? "red"
               : "black"
-            : "blue";
+            : "lightblue";
+          if (
+            board.lastHitPosition() !== null &&
+            board.lastHitPosition().x === x &&
+            board.lastHitPosition().y === y
+          ) {
+            cell.classList.add("highlighted");
+          } else {
+            cell.classList.remove("highlighted");
+          }
+        } else {
+          cell.style.backgroundColor =
+            board.hitAt({ x, y }) === "hit" ? "red" : "lightblue";
         }
 
         switch (board.hitAt({ x, y })) {

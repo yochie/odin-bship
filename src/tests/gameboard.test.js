@@ -18,6 +18,7 @@ describe("Gameboard", () => {
     expect(gb.hitAt).toBeDefined();
     expect(gb.hasShipAt).toBeDefined();
     expect(gb.lastAttackLanded).toBeDefined();
+    expect(gb.lastHitPosition).toBeDefined();
   });
 
   test("empty slots are indeed empty", () => {
@@ -120,5 +121,11 @@ describe("Gameboard", () => {
 
   test("last attack landed false in absence of attacks", () => {
     expect(gb.lastAttackLanded()).toBeFalsy();
+  });
+
+  test("last hit position returned", () => {
+    const target = { x: 3, y: 3 };
+    gb.receiveAttack(target);
+    expect(gb.lastHitPosition()).toEqual(target);
   });
 });

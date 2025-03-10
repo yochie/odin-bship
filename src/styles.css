@@ -80,6 +80,10 @@ img {
   aspect-ratio: 1;
 }
 
+.board-cell.highlighted {
+  font-weight: 1000;
+}
+
 .game-over {
   display: none;
 }
