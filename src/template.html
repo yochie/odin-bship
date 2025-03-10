@@ -6,6 +6,10 @@
     <title>Document</title>
   </head>
   <body>
+    <div class="header">
+      <h2>Battle ship</h2>
+      <button class="reset-button">Reset</button>
+    </div>
     <div class="game-start-screen">
       <h2>Starting new game...</h2>
       <p class="human-opponent-message">
@@ -13,11 +17,24 @@
       </p>
       <button class="start-button">Start</button>
     </div>
-    <div class="to-place">
-      <button class="reset-button">Reset</button>
-      <div class="game-over">Game Over</div>
+    <div class="game-over-screen">
+      <h2>Game Over...</h2>
+      <div class="gameboards">
+        <div class="gameboard-header">
+          <h2>Player 1</h2>
+        </div>
+        <div class="gameboard-header">
+          <h2>Player 2</h2>
+        </div>
+        <div class="gameboard-section">
+          <div id="0" class="gameboard"></div>
+        </div>
+        <div class="gameboard-section">
+          <div id="1" class="gameboard"></div>
+        </div>
+      </div>
     </div>
-    <div class="gameboards">
+    <div class="gameboards game-boards-screen">
       <div class="gameboard-header">
         <h2>You</h2>
       </div>

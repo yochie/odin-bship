@@ -42,13 +42,35 @@ img {
   --cols: 10;
 }
 
-.gameboards {
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 20px 0px 20px;
+  align-items: center;
+}
+
+.header button {
+  padding: 10px;
+}
+
+.header h2 {
+  font-weight: bold;
+  font-size: 3rem;
+}
+
+.game-over-screen,
+.game-start-screen,
+.game-boards-screen {
+  display: none;
+}
+
+.game-boards-screen.active {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr;
   gap: 20px;
   padding: 50px;
-  height: 100vh;
+  height: 80vh;
 }
 
 .gameboard-section {
@@ -64,7 +86,7 @@ img {
 
 .gameboard-header h2 {
   font-weight: bold;
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .gameboard {
@@ -73,6 +95,7 @@ img {
   grid-template-rows: repeat(var(--rows), 1fr);
   grid-template-columns: repeat(var(--cols), 1fr);
 }
+
 .gameboard .board-cell {
   border: solid black 1px;
   display: flex;
@@ -85,34 +108,21 @@ img {
   font-weight: 1000;
 }
 
-.game-over {
-  display: none;
-}
-
-.game-start-screen {
-  z-index: 2;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  background-color: white;
+.game-over-screen.active,
+.game-start-screen.active {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 20px;
 }
-
 .start-button {
   padding: 20px;
   font-weight: bold;
 }
 
-.game-start-screen h2 {
+.game-start-screen h2,
+.game-over-screen h2 {
   font-weight: bold;
-  font-size: 3rem;
-}
-
-.to-place {
-  position: absolute;
-  z-index: 1;
+  font-size: 2rem;
 }

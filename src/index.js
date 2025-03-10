@@ -18,10 +18,11 @@ const activeBoardView = new BoardView("active-board", true);
 const inactiveBoardView = new BoardView("opponent-board", false);
 const startButton = document.querySelector(".start-button");
 const endTurnButton = document.querySelector(".end-turn-button");
-const gameOverNode = document.querySelector(".game-over");
+const gameOverNode = document.querySelector(".game-over-screen");
 const resetButton = document.querySelector(".reset-button");
 const gameStartNode = document.querySelector(".game-start-screen");
 const instructionNode = document.querySelector(".attack-state");
+const gameBoardNode = document.querySelector(".game-boards-screen");
 
 const uiManager = new UIManager(
   activeBoardView,
@@ -32,6 +33,7 @@ const uiManager = new UIManager(
   resetButton,
   gameStartNode,
   instructionNode,
+  gameBoardNode,
 );
 
 const inputHandler = new InputHandler(gameState, uiManager);

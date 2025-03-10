@@ -1,4 +1,7 @@
 import BoardView from "./boardview.js";
+const BOARDS = "boards";
+const START = "start";
+const OVER = "over";
 
 export default class UIManager {
   #playerBoardView;
@@ -12,6 +15,7 @@ export default class UIManager {
   //containers
   #gameOverNode;
   #gameStartNode;
+  #gameBoardNode;
   #instructionNode;
 
   #attackHandlers;
@@ -28,6 +32,7 @@ export default class UIManager {
     resetButton,
     gameStartNode,
     instructionNode,
+    gameBoardNode,
   ) {
     //dom buttons
     this.#startButton = startButton;
@@ -37,6 +42,7 @@ export default class UIManager {
     //dom containers
     this.#gameOverNode = gameOverNode;
     this.#gameStartNode = gameStartNode;
+    this.#gameBoardNode = gameBoardNode;
     this.#instructionNode = instructionNode;
 
     //dom view/managers
@@ -62,6 +68,8 @@ export default class UIManager {
     );
 
     this.#resetButton.addEventListener("click", (event) => this.onReset(event));
+
+    this.display(START);
   }
 
   addAttackHandler(callback) {
@@ -94,8 +102,7 @@ export default class UIManager {
     for (const handler of this.#startHandlers) {
       handler(event);
     }
-    this.gameStartDisplay(false);
-    this.instructionDisplay(false);
+    this.display(BOARDS);
   }
 
   onEndTurn(event) {
@@ -106,9 +113,7 @@ export default class UIManager {
   }
 
   onReset(event) {
-    this.gameStartDisplay(true);
-    this.gameOverDisplay(false);
-    this.instructionDisplay(false);
+    this.display(START);
     for (const handler of this.#resetHandlers) {
       handler(event);
     }
@@ -127,7 +132,7 @@ export default class UIManager {
     this.#opponentBoardView.render(inactivePlayerBoard);
 
     if (players.isGameOver()) {
-      this.gameOverDisplay(true);
+      this.display(OVER);
     }
 
     this.instructionDisplay(
@@ -137,15 +142,53 @@ export default class UIManager {
     );
   }
 
-  gameOverDisplay(over) {
-    this.#gameOverNode.style.display = over ? "block" : "none";
+  gameOverDisplay(show) {
+    if (show) {
+      this.#gameOverNode.classList.add("active");
+    } else {
+      this.#gameOverNode.classList.remove("active");
+    }
   }
 
   gameStartDisplay(show) {
-    this.#gameStartNode.style.visibility = show ? "visible" : "hidden";
+    if (show) {
+      this.#gameStartNode.classList.add("active");
+    } else {
+      this.#gameStartNode.classList.remove("active");
+    }
   }
 
-  instructionDisplay(attackDone, gameOver, attackLanded = false) {
+  gameBoardDisplay(show) {
+    if (show) {
+      this.#gameBoardNode.classList.add("active");
+    } else {
+      this.#gameBoardNode.classList.remove("active");
+      this.instructionDisplay(false);
+    }
+  }
+
+  //todo : implement as dict that is enabled/disabled by key with iteration
+  display(screen) {
+    switch (screen) {
+      case START:
+        this.gameStartDisplay(true);
+        this.gameBoardDisplay(false);
+        this.gameOverDisplay(false);
+        break;
+      case BOARDS:
+        this.gameStartDisplay(false);
+        this.gameBoardDisplay(true);
+        this.gameOverDisplay(false);
+        break;
+      case OVER:
+        this.gameStartDisplay(false);
+        this.gameBoardDisplay(false);
+        this.gameOverDisplay(true);
+        break;
+    }
+  }
+
+  instructionDisplay(attackDone, gameOver = false, attackLanded = false) {
     if (!attackDone) {
       this.#instructionNode.textContent = "Choose target...";
       this.#endTurnButton.style.visibility = "hidden";
