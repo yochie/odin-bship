@@ -1,51 +1,61 @@
 import BoardView from "./boardview.js";
+//screen keys
 const BOARDS = "boards";
 const START = "start";
 const OVER = "over";
+const SWAP = "swap";
 
 export default class UIManager {
+  //board views
   #playerBoardView;
   #opponentBoardView;
+  #gameOverBoardViews;
 
   //buttons
   #startButton;
   #endTurnButton;
   #resetButton;
+  #startTurnButton;
 
-  //containers
+  //dom nodes
   #gameOverNode;
   #gameStartNode;
   #gameBoardNode;
   #instructionNode;
-  #gameOverBoardViews;
+  #turnSwapNode;
 
   #attackHandlers;
   #startHandlers;
   #endTurnHandlers;
   #resetHandlers;
+  #startTurnHandlers;
 
   constructor(
     playerBoardView,
     opponentBoardView,
     startButton,
+    startTurnButton,
     endTurnButton,
-    gameOverNode,
     resetButton,
+    gameOverNode,
     gameStartNode,
-    instructionNode,
+    turnSwapNode,
     gameBoardNode,
+    instructionNode,
     gameOverBoardViews,
   ) {
     //dom buttons
     this.#startButton = startButton;
     this.#endTurnButton = endTurnButton;
     this.#resetButton = resetButton;
+    this.#startTurnButton = startTurnButton;
 
     //dom containers
     this.#gameOverNode = gameOverNode;
     this.#gameStartNode = gameStartNode;
     this.#gameBoardNode = gameBoardNode;
     this.#instructionNode = instructionNode;
+    this.#turnSwapNode = turnSwapNode;
 
     //dom view/managers
     this.#playerBoardView = playerBoardView;
@@ -57,6 +67,7 @@ export default class UIManager {
     this.#startHandlers = [];
     this.#endTurnHandlers = [];
     this.#resetHandlers = [];
+    this.#startTurnHandlers = [];
 
     this.#opponentBoardView.container.addEventListener("click", (event) => {
       this.onAttack(event);
@@ -72,7 +83,11 @@ export default class UIManager {
 
     this.#resetButton.addEventListener("click", (event) => this.onReset(event));
 
-    this.display(START);
+    this.#startTurnButton.addEventListener("click", (event) =>
+      this.onStartTurn(event),
+    );
+
+    this.displayScreen(START);
   }
 
   addAttackHandler(callback) {
@@ -91,41 +106,68 @@ export default class UIManager {
     this.#resetHandlers.push(callback);
   }
 
+  addStartTurnHandler(callback) {
+    this.#startTurnHandlers.push(callback);
+  }
+
   onAttack(event) {
+    let gameState = null;
     //ensure this is actually an attack event
     if (!event.target.classList.contains("board-cell")) {
       return;
     }
     for (const handler of this.#attackHandlers) {
-      handler(event);
+      gameState = handler(event);
     }
+    this.update(gameState);
   }
 
   onStartGame(event) {
+    let gameState;
     for (const handler of this.#startHandlers) {
-      handler(event);
+      gameState = handler(event);
     }
-    this.display(BOARDS);
+    this.displayScreen(SWAP);
+    this.update(gameState);
   }
 
   onEndTurn(event) {
+    let gameState = null;
     for (const handler of this.#endTurnHandlers) {
-      handler(event);
+      gameState = handler(event);
     }
-    this.instructionDisplay(false);
+    this.displayScreen(SWAP);
+    this.update(gameState);
+  }
+
+  onStartTurn(event) {
+    let gameState = null;
+    for (const handler of this.#startTurnHandlers) {
+      gameState = handler(event);
+    }
+    this.displayScreen(BOARDS);
+    this.update(gameState);
   }
 
   onReset(event) {
-    this.display(START);
+    let gameState = null;
     for (const handler of this.#resetHandlers) {
-      handler(event);
+      gameState = handler(event);
     }
+    this.displayScreen(START);
+    this.update(gameState);
   }
 
   update(gameState) {
+    if (gameState === null) {
+      return;
+    }
     const turnTracker = gameState.turnTracker;
     const players = gameState.playerManager;
 
+    if (!turnTracker.isGameStarted()) {
+      return;
+    }
     //todo use gamestate utilities to get players
     let activePlayerIndex = turnTracker.activePlayer();
     let activePlayerBoard = players.getPlayer(activePlayerIndex).gameBoard;
@@ -137,7 +179,7 @@ export default class UIManager {
 
     if (players.isGameOver()) {
       this.fillGameOverScreen(gameState);
-      this.display(OVER);
+      this.displayScreen(OVER);
     }
 
     this.instructionDisplay(
@@ -180,22 +222,39 @@ export default class UIManager {
     }
   }
 
+  turnSwapDisplay(show) {
+    if (show) {
+      this.#turnSwapNode.classList.add("active");
+    } else {
+      this.#turnSwapNode.classList.remove("active");
+    }
+  }
+
   //todo : implement as dict that is enabled/disabled by key with iteration
-  display(screen) {
+  displayScreen(screen) {
     switch (screen) {
       case START:
         this.gameStartDisplay(true);
         this.gameBoardDisplay(false);
+        this.turnSwapDisplay(false);
         this.gameOverDisplay(false);
         break;
       case BOARDS:
         this.gameStartDisplay(false);
         this.gameBoardDisplay(true);
+        this.turnSwapDisplay(false);
+        this.gameOverDisplay(false);
+        break;
+      case SWAP:
+        this.gameStartDisplay(false);
+        this.gameBoardDisplay(false);
+        this.turnSwapDisplay(true);
         this.gameOverDisplay(false);
         break;
       case OVER:
         this.gameStartDisplay(false);
         this.gameBoardDisplay(false);
+        this.turnSwapDisplay(false);
         this.gameOverDisplay(true);
         break;
     }

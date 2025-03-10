@@ -24,9 +24,11 @@ const inactiveBoardView = new BoardView(
 );
 const startButton = document.querySelector(".start-button");
 const endTurnButton = document.querySelector(".end-turn-button");
+const startTurnButton = document.querySelector(".start-turn-button");
 const gameOverNode = document.querySelector(".game-over-screen");
 const resetButton = document.querySelector(".reset-button");
 const gameStartNode = document.querySelector(".game-start-screen");
+const turnSwapNode = document.querySelector(".turn-swap-screen");
 const instructionNode = document.querySelector(".attack-state");
 const gameBoardNode = document.querySelector(".game-boards-screen");
 const gameOverBoardViews = [];
@@ -41,12 +43,14 @@ const uiManager = new UIManager(
   activeBoardView,
   inactiveBoardView,
   startButton,
+  startTurnButton,
   endTurnButton,
-  gameOverNode,
   resetButton,
+  gameOverNode,
   gameStartNode,
-  instructionNode,
+  turnSwapNode,
   gameBoardNode,
+  instructionNode,
   gameOverBoardViews,
 );
 

@@ -18,40 +18,36 @@ export default class InputHandler {
     this.uiManager.addStartHandler((event) => this.handleStart(event));
     this.uiManager.addEndTurnHandler((event) => this.handleEndTurn(event));
     this.uiManager.addResetHandler((event) => this.handleReset(event));
+    this.uiManager.addStartTurnHandler((event) => this.handleStartTurn(event));
   }
 
   handleAttack(event) {
     if (!this.gameState.isGameStarted()) {
-      return false;
+      return this.gameState;
     }
 
     let position = BoardView.parsePosition(event.target);
-    const attackSuccess = this.gameState.attack(position);
-    if (!attackSuccess) {
-      //attacks fail if they are invalid
-      //e.g. already attacked position
-      return false;
-    }
-    this.uiManager.update(this.gameState);
+    this.gameState.attack(position);
+    return this.gameState;
   }
 
   handleStart(event) {
     this.gameState.start();
-    this.uiManager.update(this.gameState);
+    return this.gameState;
   }
 
-  handleEndTurn(envent) {
-    const success = this.gameState.endTurn();
-    if (!success) {
-      return;
-    }
-
-    this.uiManager.update(this.gameState);
+  handleEndTurn(event) {
+    this.gameState.endTurn();
+    return this.gameState;
   }
 
   handleReset(event) {
     //rather than mutate current gamestate, just create a whole new one
-    this.gameState = createDefaultGameState();
-    this.uiManager.update(this.gameState);
+    return createDefaultGameState();
+  }
+
+  handleStartTurn(event) {
+    this.gameState.startTurn();
+    return this.gameState;
   }
 }

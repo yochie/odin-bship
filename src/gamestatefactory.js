@@ -30,7 +30,7 @@ function createDefaultBoard(size) {
 //p1 is human, p2 is bot
 //single 1 unit ship at zero
 function createDefaultGameState() {
-  const boardSize = 10;
+  const boardSize = 3;
   const turnTracker = new TurnTracker();
   const playerManager = new PlayerManager();
 
@@ -48,7 +48,7 @@ function createDefaultGameState() {
 }
 
 function createDefaultGameStateWithoutBots() {
-  const boardSize = 10;
+  const boardSize = 3;
   const turnTracker = new TurnTracker();
   const playerManager = new PlayerManager();
 
@@ -66,7 +66,7 @@ function createDefaultGameStateWithoutBots() {
 }
 
 function createRicherGameState() {
-  const boardSize = 10;
+  const boardSize = 3;
   const turnTracker = new TurnTracker();
   const playerManager = new PlayerManager();
 

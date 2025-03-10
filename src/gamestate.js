@@ -13,6 +13,10 @@ export default class GameState {
     this.turnTracker.startGame();
   }
 
+  startTurn() {
+    this.turnTracker.startTurn();
+  }
+
   //returns true on success
   //returns false if attack fails (invalid state or target)
   //throws errors if called with bad args
@@ -86,9 +90,13 @@ export default class GameState {
     if (!this.turnTracker.isGameStarted()) {
       return false;
     }
+    if (!this.turnTracker.isTurnStarted()) {
+      return false;
+    }
     if (this.turnTracker.isAttackDone()) {
       return false;
     }
+
     return true;
   }
 

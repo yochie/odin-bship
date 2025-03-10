@@ -16,45 +16,49 @@ describe("game state", () => {
     expect(tracker.attack).toBeDefined();
     expect(tracker.startGame).toBeDefined();
     expect(tracker.isAttackDone).toBeDefined();
+    expect(tracker.isTurnStarted).toBeDefined();
+    expect(tracker.startTurn).toBeDefined();
   });
 
-  test("game not started yet", () => {
-    expect(tracker.gameStarted).toBeFalsy();
+  test("game not started by default", () => {
+    expect(tracker.isGameStarted()).toBeFalsy();
   });
 
-  test("game not over yet", () => {
-    expect(tracker.gameOver).toBeFalsy();
+  test("game startable", () => {
+    tracker.startGame();
+    expect(tracker.isGameStarted()).toBeTruthy();
   });
 
-  test("has activePlayer", () => {
-    expect(tracker.activePlayer()).toBeDefined();
-  });
-
-  test("has inactivePlayer", () => {
-    expect(tracker.inactivePlayer()).toBeDefined();
+  test("no inactive/active player (negative index) before game start", () => {
+    expect(tracker.activePlayer()).toBeLessThan(0);
+    expect(tracker.inactivePlayer()).toBeLessThan(0);
   });
 
   test("attacks on unstarted game throw", () => {
     expect(() => tracker.attack()).toThrow();
   });
 
-  test("started game is properly set", () => {
+  test("attacks on unstarted turn throw", () => {
     tracker.startGame();
-    expect(tracker.isGameStarted()).toBeTruthy();
+    expect(() => tracker.attack()).toThrow();
   });
 
   test("attacks once per turn max", () => {
-    const p1Board = tracker.activePlayer.gameBoard;
-
     tracker.startGame();
+    tracker.startTurn();
     tracker.attack();
     expect(() => tracker.attack()).toThrow();
   });
 
   test("attacks for turn are recorded", () => {
     tracker.startGame();
+    tracker.startTurn();
     tracker.attack();
     expect(tracker.isAttackDone()).toBeTruthy();
+  });
+
+  test("turn swap throws if game is not started", () => {
+    expect(() => this.swapTurn()).toThrow();
   });
 
   test("turn swap changes active players", () => {
@@ -66,16 +70,34 @@ describe("game state", () => {
     expect(tracker.activePlayer()).toBe(secondPlayer);
   });
 
-  test("attack done state refreshed on turn swap", () => {
+  test("attack and turn state refreshed on turn swap", () => {
     tracker.startGame();
+    tracker.startTurn();
     tracker.attack();
     tracker.swapTurn();
     expect(tracker.isAttackDone()).toBeFalsy();
+    expect(tracker.isTurnStarted()).toBeFalsy();
   });
 
-  // test("attacks can cause gameover", () => {
+  test("turn not started by default", () => {
+    expect(tracker.isTurnStarted()).toBeFalsy();
+  });
 
-  //   gameState.startGame();
-  //   gameState.attack();
-  // });
+  test("starting turn before game throws", () => {
+    expect(() => tracker.startTurn()).toThrow();
+  });
+
+  test("turn correctly started", () => {
+    tracker.startGame();
+    tracker.startTurn();
+    expect(tracker.isTurnStarted()).toBeTruthy();
+  });
+
+  test("turn started reset between turns", () => {
+    tracker.startGame();
+    tracker.startTurn();
+    tracker.attack();
+    tracker.swapTurn();
+    expect(tracker.isTurnStarted()).toBeFalsy();
+  });
 });

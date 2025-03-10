@@ -5,6 +5,7 @@ export default class AutomatedPlayer {
   }
 
   playTurn(gameState) {
+    gameState.startTurn();
     const opponent = gameState.inactivePlayer();
     let opponentBoard = opponent.gameBoard;
     const target = this.#ai.chooseTarget(opponentBoard);

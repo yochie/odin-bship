@@ -3,6 +3,7 @@ import TurnTracker from "../turntracker";
 import AutomatedPlayer from "../automatedplayer";
 
 const swapSpy = jest.spyOn(TurnTracker.prototype, "swapTurn");
+const startTurnSpy = jest.spyOn(TurnTracker.prototype, "startTurn");
 const aiSpy = jest.spyOn(AutomatedPlayer.prototype, "playTurn");
 
 describe("game state", () => {
@@ -21,6 +22,7 @@ describe("game state", () => {
     expect(gameState.turnTracker).toBeDefined();
     expect(gameState.playerManager).toBeDefined();
     expect(gameState.endTurn).toBeDefined();
+    expect(gameState.startTurn).toBeDefined();
   });
 
   test("not started by default", () => {
@@ -32,7 +34,13 @@ describe("game state", () => {
     expect(gameState.isGameStarted()).toBeTruthy();
   });
 
+  test("cant start turn before game", () => {
+    expect(() => gameState.startTurn()).toThrow();
+  });
+
   test("attack throws with bad args", () => {
+    gameState.start();
+    gameState.startTurn();
     expect(() => gameState.attack()).toThrow("args");
     expect(() => gameState.attack({ x: "a", y: "b" })).toThrow("args");
     expect(() => gameState.attack({ x: 1.5, y: 1 })).toThrow("args");
@@ -43,24 +51,36 @@ describe("game state", () => {
     expect(gameState.attack({ x: 0, y: 0 })).toBeFalsy();
   });
 
+  test("attack fails if turn not started", () => {
+    gameState.start();
+    expect(gameState.attack({ x: 0, y: 0 })).toBeFalsy();
+  });
+
   test("attack fails if already done for turn", () => {
     gameState.start();
+    gameState.startTurn();
     gameState.attack({ x: 0, y: 0 });
     expect(gameState.attack({ x: 0, y: 0 })).toBeFalsy();
   });
 
   test("end turn fails if before game start", () => {
+    expect(gameState.endTurn()).toBeFalsy();
+  });
+
+  test("end turn fails if before turn start", () => {
     gameState.start();
     expect(gameState.endTurn()).toBeFalsy();
   });
 
   test("end turn fails if before attack", () => {
     gameState.start();
+    gameState.startTurn();
     expect(gameState.endTurn()).toBeFalsy();
   });
 
   test("end turn fails if game over", () => {
     gameState.start();
+    gameState.startTurn();
     //should end game as its only ship by default
     gameState.attack({ x: 0, y: 0 });
 
@@ -69,6 +89,7 @@ describe("game state", () => {
 
   test("end turn succeeds under normal conditions", () => {
     gameState.start();
+    gameState.startTurn();
     gameState.attack({ x: 1, y: 0 });
     let result = gameState.endTurn();
     expect(result).toBeTruthy();
@@ -78,6 +99,7 @@ describe("game state", () => {
   //state is more complex should be validated elsewhere
   test("end turn calls turn swap on turnTracker", () => {
     gameState.start();
+    gameState.startTurn();
     gameState.attack({ x: 1, y: 0 });
     gameState.endTurn();
 
@@ -86,10 +108,18 @@ describe("game state", () => {
 
   test("end turn calls ai for bot players", () => {
     gameState.start();
+    gameState.startTurn();
     gameState.attack({ x: 1, y: 0 });
+    //second player is bot in default state
     gameState.endTurn();
 
     expect(aiSpy).toHaveBeenCalled();
+  });
+
+  test("start turn calls turntracker", () => {
+    gameState.start();
+    gameState.startTurn();
+    expect(startTurnSpy).toHaveBeenCalled();
   });
 
   //todo: add test for attacking same position twice
