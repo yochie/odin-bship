@@ -64,13 +64,14 @@ img {
   display: none;
 }
 
-.game-boards-screen.active {
+.game-boards-screen.active,
+.game-over-screen .gameboards {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr;
   gap: 20px;
   padding: 50px;
-  height: 80vh;
+  align-self: stretch;
 }
 
 .gameboard-section {
@@ -94,6 +95,7 @@ img {
   display: grid;
   grid-template-rows: repeat(var(--rows), 1fr);
   grid-template-columns: repeat(var(--cols), 1fr);
+  height: 100%;
 }
 
 .gameboard .board-cell {

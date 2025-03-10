@@ -2,8 +2,8 @@ export default class BoardView {
   container;
   #forActivePlayer;
 
-  constructor(domID, forActivePlayer) {
-    this.container = document.getElementById(domID);
+  constructor(node, forActivePlayer) {
+    this.container = node;
     this.#forActivePlayer = forActivePlayer;
   }
 

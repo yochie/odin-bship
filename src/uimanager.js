@@ -17,6 +17,7 @@ export default class UIManager {
   #gameStartNode;
   #gameBoardNode;
   #instructionNode;
+  #gameOverBoardViews;
 
   #attackHandlers;
   #startHandlers;
@@ -33,6 +34,7 @@ export default class UIManager {
     gameStartNode,
     instructionNode,
     gameBoardNode,
+    gameOverBoardViews,
   ) {
     //dom buttons
     this.#startButton = startButton;
@@ -48,6 +50,7 @@ export default class UIManager {
     //dom view/managers
     this.#playerBoardView = playerBoardView;
     this.#opponentBoardView = opponentBoardView;
+    this.#gameOverBoardViews = gameOverBoardViews;
 
     //handlers lists
     this.#attackHandlers = [];
@@ -123,6 +126,7 @@ export default class UIManager {
     const turnTracker = gameState.turnTracker;
     const players = gameState.playerManager;
 
+    //todo use gamestate utilities to get players
     let activePlayerIndex = turnTracker.activePlayer();
     let activePlayerBoard = players.getPlayer(activePlayerIndex).gameBoard;
     this.#playerBoardView.render(activePlayerBoard);
@@ -132,6 +136,7 @@ export default class UIManager {
     this.#opponentBoardView.render(inactivePlayerBoard);
 
     if (players.isGameOver()) {
+      this.fillGameOverScreen(gameState);
       this.display(OVER);
     }
 
@@ -140,6 +145,14 @@ export default class UIManager {
       players.isGameOver(),
       inactivePlayerBoard.lastAttackLanded(),
     );
+  }
+
+  fillGameOverScreen(gameState) {
+    const players = gameState.playerManager;
+    const playerCount = 2;
+    for (let i = 0; i < playerCount; i++) {
+      this.#gameOverBoardViews[i].render(players.getPlayer(i).gameBoard);
+    }
   }
 
   gameOverDisplay(show) {
