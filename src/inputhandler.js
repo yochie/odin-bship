@@ -43,7 +43,8 @@ export default class InputHandler {
 
   handleReset(event) {
     //rather than mutate current gamestate, just create a whole new one
-    return createDefaultGameState();
+    this.gameState = createDefaultGameState();
+    return this.gameState;
   }
 
   handleStartTurn(event) {
