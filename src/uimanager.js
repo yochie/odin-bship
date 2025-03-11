@@ -183,7 +183,6 @@ export default class UIManager {
 
     this.instructionDisplay(
       turnTracker.isAttackDone(),
-      players.isGameOver(),
       inactivePlayerBoard.lastAttackLanded(),
     );
 
@@ -261,16 +260,10 @@ export default class UIManager {
     }
   }
 
-  instructionDisplay(attackDone, gameOver = false, attackLanded = false) {
+  instructionDisplay(attackDone, attackLanded = false) {
     if (!attackDone) {
       this.#instructionNode.textContent = "Choose target...";
       this.#endTurnButton.style.visibility = "hidden";
-      return;
-    }
-
-    if (gameOver) {
-      this.#endTurnButton.style.visibility = "hidden";
-      this.#instructionNode.textContent = "Opponent sunk! You win.";
       return;
     }
 
