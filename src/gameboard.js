@@ -1,9 +1,9 @@
 import Ship from "./ship.js";
 
-const HIT = "hit";
-const MISS = "miss";
+export const HIT = "hit";
+export const MISS = "miss";
 
-export default class Gameboard {
+export class GameBoard {
   //2D array
   //indicates whether each position has been hit, missed or still untouched (null)
   #hitPositions;

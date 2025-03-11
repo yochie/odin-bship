@@ -1,6 +1,6 @@
 import PlayerManager from "../playermanager";
 import Player from "../player";
-import GameBoard from "../gameboard";
+import { GameBoard } from "../gameboard";
 
 const playerDeadMock = jest.spyOn(Player.prototype, "isDead");
 

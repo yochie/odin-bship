@@ -1,5 +1,5 @@
 import Player from "../player.js";
-import GameBoard from "../gameboard.js";
+import { GameBoard } from "../gameboard.js";
 
 describe("player", () => {
   let player;

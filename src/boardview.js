@@ -1,3 +1,5 @@
+import { HIT, MISS } from "./gameboard.js";
+
 export default class BoardView {
   container;
   #forActivePlayer;
@@ -21,7 +23,7 @@ export default class BoardView {
 
         if (this.#forActivePlayer) {
           cell.style.backgroundColor = board.hasShipAt({ x, y })
-            ? board.hitAt({ x, y }) === "hit"
+            ? board.hitAt({ x, y }) === HIT
               ? "red"
               : "black"
             : "lightblue";
@@ -36,14 +38,14 @@ export default class BoardView {
           }
         } else {
           cell.style.backgroundColor =
-            board.hitAt({ x, y }) === "hit" ? "red" : "lightblue";
+            board.hitAt({ x, y }) === HIT ? "red" : "lightblue";
         }
 
         switch (board.hitAt({ x, y })) {
-          case "hit":
+          case HIT:
             cell.textContent = "X";
             break;
-          case "miss":
+          case MISS:
             cell.textContent = "O";
             break;
           default:

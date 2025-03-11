@@ -1,15 +1,15 @@
-import Gameboard from "../gameboard.js";
+import { GameBoard, HIT, MISS } from "../gameboard.js";
 
 describe("Gameboard", () => {
   let gb;
   let zero = { x: 0, y: 0 };
 
   beforeEach(() => {
-    gb = new Gameboard(10, 10);
+    gb = new GameBoard(10, 10);
   });
 
   test("api exists", () => {
-    expect(Gameboard).toBeDefined();
+    expect(GameBoard).toBeDefined();
     expect(gb.placeShip).toBeDefined();
     expect(gb.receiveAttack).toBeDefined();
     expect(gb.isFullySunk).toBeDefined();
@@ -56,7 +56,7 @@ describe("Gameboard", () => {
 
   test("missed attacks are recorded", () => {
     gb.receiveAttack(zero);
-    expect(gb.hitAt(zero)).toBe("miss");
+    expect(gb.hitAt(zero)).toBe(MISS);
   });
 
   //note we do not test that ship is actually hit
@@ -65,7 +65,7 @@ describe("Gameboard", () => {
   test("landing attacks are recorded", () => {
     gb.placeShip(zero, 2, false);
     gb.receiveAttack(zero);
-    expect(gb.hitAt(zero)).toBe("hit");
+    expect(gb.hitAt(zero)).toBe(HIT);
   });
 
   test("cannot attack same position twice", () => {

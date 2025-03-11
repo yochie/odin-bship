@@ -1,5 +1,5 @@
 import DumbAI from "../dumbai";
-import GameBoard from "../gameboard";
+import { GameBoard } from "../gameboard";
 
 describe("dumb ai", () => {
   let ai;

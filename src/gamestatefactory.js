@@ -2,7 +2,7 @@ import GameState from "./gamestate.js";
 import TurnTracker from "./turntracker.js";
 import PlayerManager from "./playermanager.js";
 import Player from "./player.js";
-import GameBoard from "./gameboard.js";
+import { GameBoard } from "./gameboard.js";
 import DumbAI from "./dumbai.js";
 import AutomatedPlayer from "./automatedplayer.js";
 
