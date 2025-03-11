@@ -4,6 +4,7 @@ import {
 } from "../gamestatefactory";
 import TurnTracker from "../turntracker";
 import AutomatedPlayer from "../automatedplayer";
+import Player from "../player";
 
 const swapSpy = jest.spyOn(TurnTracker.prototype, "swapTurn");
 const startTurnSpy = jest.spyOn(TurnTracker.prototype, "startTurn");
@@ -20,7 +21,6 @@ describe("game state", () => {
     aiSpy.mockClear();
   });
 
-  //todo: add active/inactive player tests
   test("api", () => {
     expect(gameState.start).toBeDefined();
     expect(gameState.isGameStarted).toBeDefined();
@@ -29,6 +29,8 @@ describe("game state", () => {
     expect(gameState.playerManager).toBeDefined();
     expect(gameState.endTurn).toBeDefined();
     expect(gameState.startTurn).toBeDefined();
+    expect(gameState.activePlayer).toBeDefined();
+    expect(gameState.inactivePlayer).toBeDefined();
   });
 
   test("not started by default", () => {
@@ -136,11 +138,21 @@ describe("game state", () => {
     expect(startTurnSpy).toHaveBeenCalledTimes(3);
   });
 
-  //todo: add test for attacking same position twice
-  //using mock or complex state setup... prob mock is better
-  // test("attack fails on already attacked tile", () => {
-  //   gameState.start();
-  //   gameState.attack({ x: 0, y: 0 });
+  test("active player throws before game start", () => {
+    expect(() => gameState.activePlayer()).toThrow();
+  });
 
-  // });
+  test("inactive player throws before game start", () => {
+    expect(() => gameState.inactivePlayer()).toThrow();
+  });
+
+  test("active returned after game start", () => {
+    gameState.start();
+    expect(gameState.activePlayer()).toBeInstanceOf(Player);
+  });
+
+  test("inactive returned after game start", () => {
+    gameState.start();
+    expect(gameState.inactivePlayer()).toBeInstanceOf(Player);
+  });
 });
