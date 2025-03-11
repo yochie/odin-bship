@@ -86,8 +86,6 @@ export default class UIManager {
     this.#startTurnButton.addEventListener("click", (event) =>
       this.onStartTurn(event),
     );
-
-    this.displayScreen(START);
   }
 
   addAttackHandler(callback) {
@@ -127,7 +125,6 @@ export default class UIManager {
     for (const handler of this.#startHandlers) {
       gameState = handler(event);
     }
-    this.displayScreen(SWAP);
     this.update(gameState);
   }
 
@@ -136,7 +133,6 @@ export default class UIManager {
     for (const handler of this.#endTurnHandlers) {
       gameState = handler(event);
     }
-    this.displayScreen(SWAP);
     this.update(gameState);
   }
 
@@ -145,7 +141,6 @@ export default class UIManager {
     for (const handler of this.#startTurnHandlers) {
       gameState = handler(event);
     }
-    this.displayScreen(BOARDS);
     this.update(gameState);
   }
 
@@ -154,7 +149,6 @@ export default class UIManager {
     for (const handler of this.#resetHandlers) {
       gameState = handler(event);
     }
-    this.displayScreen(START);
     this.update(gameState);
   }
 
@@ -166,8 +160,21 @@ export default class UIManager {
     const players = gameState.playerManager;
 
     if (!turnTracker.isGameStarted()) {
+      this.displayScreen(START);
       return;
     }
+
+    if (!turnTracker.isTurnStarted()) {
+      this.displayScreen(SWAP);
+      return;
+    }
+
+    if (players.isGameOver()) {
+      this.fillGameOverScreen(gameState);
+      this.displayScreen(OVER);
+      return;
+    }
+
     //todo use gamestate utilities to get players
     let activePlayerIndex = turnTracker.activePlayer();
     let activePlayerBoard = players.getPlayer(activePlayerIndex).gameBoard;
@@ -177,16 +184,13 @@ export default class UIManager {
     let inactivePlayerBoard = players.getPlayer(inactivePlayerIndex).gameBoard;
     this.#opponentBoardView.render(inactivePlayerBoard);
 
-    if (players.isGameOver()) {
-      this.fillGameOverScreen(gameState);
-      this.displayScreen(OVER);
-    }
-
     this.instructionDisplay(
       turnTracker.isAttackDone(),
       players.isGameOver(),
       inactivePlayerBoard.lastAttackLanded(),
     );
+
+    this.displayScreen(BOARDS);
   }
 
   fillGameOverScreen(gameState) {

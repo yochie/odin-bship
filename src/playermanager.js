@@ -27,4 +27,16 @@ export default class PlayerManager {
     }
     return false;
   }
+
+  isVersusBot() {
+    if (this.#players.length === 0) {
+      throw new Error("No players registered");
+    }
+    for (let p of this.#players) {
+      if (p.isBot) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

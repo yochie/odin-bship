@@ -18,6 +18,7 @@ describe("Player manager", () => {
     expect(playerManager.addPlayer).toBeDefined();
     expect(playerManager.getPlayer).toBeDefined();
     expect(playerManager.isGameOver).toBeDefined();
+    expect(playerManager.isVersusBot).toBeDefined();
   });
 
   test("empty initially", () => {
@@ -60,5 +61,26 @@ describe("Player manager", () => {
     playerManager.addPlayer(player1);
     playerManager.addPlayer(player2);
     expect(playerManager.isGameOver()).toBeTruthy();
+  });
+
+  test("throws if no players", () => {
+    expect(() => playerManager.isVersusBot()).toThrow();
+  });
+
+  test("correctly detects bot player", () => {
+    let player1 = new Player(new GameBoard(boardWidth, boardHeight), false);
+    let player2 = new Player(new GameBoard(boardWidth, boardHeight), true);
+
+    playerManager.addPlayer(player1);
+    playerManager.addPlayer(player2);
+    expect(playerManager.isVersusBot()).toBeTruthy();
+  });
+
+  test("correctly detects no bot player", () => {
+    let player1 = new Player(new GameBoard(boardWidth, boardHeight), false);
+    let player2 = new Player(new GameBoard(boardWidth, boardHeight), false);
+    playerManager.addPlayer(player1);
+    playerManager.addPlayer(player2);
+    expect(playerManager.isVersusBot()).toBeFalsy();
   });
 });

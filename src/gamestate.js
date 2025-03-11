@@ -11,6 +11,19 @@ export default class GameState {
 
   start() {
     this.turnTracker.startGame();
+
+    //bot is otherwise triggered by turn end
+    const firstPlayer = this.activePlayer();
+    if (firstPlayer.isBot) {
+      this.#automatedPlayer.playTurn(this);
+    }
+
+    //because turn start is only used to hide screen
+    //when playing against human
+    //on subsequent turns, turn end handles turn auto start
+    if (this.playerManager.isVersusBot()) {
+      this.startTurn();
+    }
   }
 
   startTurn() {
@@ -81,6 +94,9 @@ export default class GameState {
     const nextPlayer = this.activePlayer();
     if (nextPlayer.isBot) {
       this.#automatedPlayer.playTurn(this);
+      //because we only want to trigger this from ui
+      //when playing against other human
+      this.startTurn();
     }
 
     return true;
