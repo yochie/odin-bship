@@ -17,13 +17,13 @@ export default class UIManager {
   #resetButton;
   #startTurnButton;
 
-  //dom nodes
-  #gameOverNode;
-  #gameStartNode;
-  #gameBoardNode;
-  #instructionNode;
-  #turnSwapNode;
+  //map of screen keys to dom nodes
+  #views;
 
+  //sub node for board view
+  #instructionNode;
+
+  //handlers
   #attackHandlers;
   #startHandlers;
   #endTurnHandlers;
@@ -50,12 +50,15 @@ export default class UIManager {
     this.#resetButton = resetButton;
     this.#startTurnButton = startTurnButton;
 
-    //dom containers
-    this.#gameOverNode = gameOverNode;
-    this.#gameStartNode = gameStartNode;
-    this.#gameBoardNode = gameBoardNode;
+    //view nodes
+    this.#views = new Map();
+    this.#views.set(OVER, gameOverNode);
+    this.#views.set(START, gameStartNode);
+    this.#views.set(BOARDS, gameBoardNode);
+    this.#views.set(SWAP, turnSwapNode);
+
+    //sub node for board view
     this.#instructionNode = instructionNode;
-    this.#turnSwapNode = turnSwapNode;
 
     //dom view/managers
     this.#playerBoardView = playerBoardView;
@@ -69,20 +72,17 @@ export default class UIManager {
     this.#resetHandlers = [];
     this.#startTurnHandlers = [];
 
+    //register event listeners
     this.#opponentBoardView.container.addEventListener("click", (event) => {
       this.onAttack(event);
     });
-
     this.#startButton.addEventListener("click", (event) =>
       this.onStartGame(event),
     );
-
     this.#endTurnButton.addEventListener("click", (event) =>
       this.onEndTurn(event),
     );
-
     this.#resetButton.addEventListener("click", (event) => this.onReset(event));
-
     this.#startTurnButton.addEventListener("click", (event) =>
       this.onStartTurn(event),
     );
@@ -153,6 +153,7 @@ export default class UIManager {
   }
 
   update(gameState) {
+    //in case no even handlers are registered and update is called needlessly
     if (gameState === null) {
       return;
     }
@@ -197,66 +198,13 @@ export default class UIManager {
     }
   }
 
-  gameOverDisplay(show) {
-    if (show) {
-      this.#gameOverNode.classList.add("active");
-    } else {
-      this.#gameOverNode.classList.remove("active");
-    }
-  }
-
-  gameStartDisplay(show) {
-    if (show) {
-      this.#gameStartNode.classList.add("active");
-    } else {
-      this.#gameStartNode.classList.remove("active");
-    }
-  }
-
-  gameBoardDisplay(show) {
-    if (show) {
-      this.#gameBoardNode.classList.add("active");
-    } else {
-      this.#gameBoardNode.classList.remove("active");
-      this.instructionDisplay(false);
-    }
-  }
-
-  turnSwapDisplay(show) {
-    if (show) {
-      this.#turnSwapNode.classList.add("active");
-    } else {
-      this.#turnSwapNode.classList.remove("active");
-    }
-  }
-
-  //todo : implement as dict that is enabled/disabled by key with iteration
   displayScreen(screen) {
-    switch (screen) {
-      case START:
-        this.gameStartDisplay(true);
-        this.gameBoardDisplay(false);
-        this.turnSwapDisplay(false);
-        this.gameOverDisplay(false);
-        break;
-      case BOARDS:
-        this.gameStartDisplay(false);
-        this.gameBoardDisplay(true);
-        this.turnSwapDisplay(false);
-        this.gameOverDisplay(false);
-        break;
-      case SWAP:
-        this.gameStartDisplay(false);
-        this.gameBoardDisplay(false);
-        this.turnSwapDisplay(true);
-        this.gameOverDisplay(false);
-        break;
-      case OVER:
-        this.gameStartDisplay(false);
-        this.gameBoardDisplay(false);
-        this.turnSwapDisplay(false);
-        this.gameOverDisplay(true);
-        break;
+    for (const [key, view] of this.#views) {
+      if (key === screen) {
+        view.classList.add("active");
+      } else {
+        view.classList.remove("active");
+      }
     }
   }
 
