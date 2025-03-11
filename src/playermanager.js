@@ -19,6 +19,10 @@ export default class PlayerManager {
     return this.#players[index];
   }
 
+  getIndex(player) {
+    return this.#players.indexOf(player);
+  }
+
   isGameOver() {
     for (let p of this.#players) {
       if (p.isDead()) {

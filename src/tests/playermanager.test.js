@@ -19,6 +19,7 @@ describe("Player manager", () => {
     expect(playerManager.getPlayer).toBeDefined();
     expect(playerManager.isGameOver).toBeDefined();
     expect(playerManager.isVersusBot).toBeDefined();
+    expect(playerManager.getIndex).toBeDefined();
   });
 
   test("empty initially", () => {
@@ -82,5 +83,17 @@ describe("Player manager", () => {
     playerManager.addPlayer(player1);
     playerManager.addPlayer(player2);
     expect(playerManager.isVersusBot()).toBeFalsy();
+  });
+
+  test("getIndex returns -1 if not found", () => {
+    expect(playerManager.getIndex(null)).toEqual(-1);
+  });
+
+  test("returns correct index", () => {
+    let player1 = new Player(new GameBoard(boardWidth, boardHeight), false);
+    let player2 = new Player(new GameBoard(boardWidth, boardHeight), false);
+    playerManager.addPlayer(player1);
+    playerManager.addPlayer(player2);
+    expect(playerManager.getIndex(player2)).toEqual(1);
   });
 });
