@@ -155,4 +155,13 @@ describe("game state", () => {
     gameState.start();
     expect(gameState.inactivePlayer()).toBeInstanceOf(Player);
   });
+
+  test("attack fails on already attacked tile", () => {
+    gameState.start();
+    gameState.attack({ x: 1, y: 0 });
+    gameState.endTurn();
+    //since bot, will return to same player
+    let result = gameState.attack({ x: 1, y: 0 });
+    expect(result).toBeFalsy();
+  });
 });
