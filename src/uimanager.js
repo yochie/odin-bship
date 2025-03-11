@@ -175,13 +175,10 @@ export default class UIManager {
       return;
     }
 
-    //todo use gamestate utilities to get players
-    let activePlayerIndex = turnTracker.activePlayer();
-    let activePlayerBoard = players.getPlayer(activePlayerIndex).gameBoard;
+    let activePlayerBoard = gameState.activePlayer().gameBoard;
     this.#playerBoardView.render(activePlayerBoard);
 
-    let inactivePlayerIndex = turnTracker.inactivePlayer();
-    let inactivePlayerBoard = players.getPlayer(inactivePlayerIndex).gameBoard;
+    let inactivePlayerBoard = gameState.inactivePlayer().gameBoard;
     this.#opponentBoardView.render(inactivePlayerBoard);
 
     this.instructionDisplay(
