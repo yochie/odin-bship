@@ -10,6 +10,8 @@ export default class UIManager {
   #playerBoardView;
   #opponentBoardView;
   #gameOverBoardViews;
+  #playerView;
+  #opponentView;
 
   //buttons
   #startButton;
@@ -33,6 +35,8 @@ export default class UIManager {
   constructor(
     playerBoardView,
     opponentBoardView,
+    playerView,
+    opponentView,
     startButton,
     startTurnButton,
     endTurnButton,
@@ -63,6 +67,8 @@ export default class UIManager {
     //dom view/managers
     this.#playerBoardView = playerBoardView;
     this.#opponentBoardView = opponentBoardView;
+    this.#playerView = playerView;
+    this.#opponentView = opponentView;
     this.#gameOverBoardViews = gameOverBoardViews;
 
     //handlers lists
@@ -185,6 +191,18 @@ export default class UIManager {
     this.instructionDisplay(
       turnTracker.isAttackDone(),
       inactivePlayerBoard.lastAttackLanded(),
+    );
+
+    this.#playerView.renderForTurn(
+      gameState.activePlayer(),
+      true,
+      players.getIndex(gameState.activePlayer()),
+    );
+
+    this.#opponentView.renderForTurn(
+      gameState.inactivePlayer(),
+      false,
+      players.getIndex(gameState.inactivePlayer()),
     );
 
     this.displayScreen(BOARDS);

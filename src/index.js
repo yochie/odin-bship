@@ -12,6 +12,7 @@ import {
   createDefaultGameStateWithoutBots,
   createRicherGameState,
 } from "./gamestatefactory.js";
+import PlayerView from "./playerview.js";
 
 const gameState = createRicherGameState();
 const activeBoardView = new BoardView(
@@ -39,9 +40,14 @@ gameOverBoardViews.push(
   new BoardView(document.getElementById("game-over-board-1"), true),
 );
 
+const playerView = new PlayerView(document.querySelector(".player-view"));
+const opponentView = new PlayerView(document.querySelector(".opponent-view"));
+
 const uiManager = new UIManager(
   activeBoardView,
   inactiveBoardView,
+  playerView,
+  opponentView,
   startButton,
   startTurnButton,
   endTurnButton,
