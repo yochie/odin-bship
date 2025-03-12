@@ -126,6 +126,10 @@ button {
   font-weight: bold;
 }
 
+.turn-swap-screen .swap-message {
+  font-weight: bold;
+}
+
 .game-start-screen h2,
 .game-over-screen h2,
 .turn-swap-screen h2 {

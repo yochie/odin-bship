@@ -173,6 +173,7 @@ export default class UIManager {
 
     if (!turnTracker.isTurnStarted()) {
       this.displayScreen(SWAP);
+      this.fillSwapScreen(players.getIndex(gameState.activePlayer()));
       return;
     }
 
@@ -206,6 +207,12 @@ export default class UIManager {
     );
 
     this.displayScreen(BOARDS);
+  }
+
+  fillSwapScreen(playerIndex) {
+    const swapNode = this.#views.get(SWAP);
+    const swapMessage = swapNode.querySelector(".swap-message");
+    swapMessage.textContent = `Turn: Player ${playerIndex + 1}`;
   }
 
   fillGameOverScreen(gameState) {
