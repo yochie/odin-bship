@@ -1,12 +1,7 @@
 import "./styles.css";
-import GameState from "./gamestate.js";
 import BoardView from "./boardview.js";
 import InputHandler from "./inputhandler.js";
 import UIManager from "./uimanager.js";
-import TurnTracker from "./turntracker.js";
-import PlayerManager from "./playermanager.js";
-import Player from "./player.js";
-import GameBoard from "./gameboard.js";
 import {
   createTestGameStatePVB,
   createTestGameStatePVP,
