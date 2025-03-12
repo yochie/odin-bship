@@ -33,21 +33,21 @@ describe("Gameboard", () => {
   });
 
   test("placement outside bounds throws", () => {
-    expect(() => gb.placeShip({ x: 11, y: 0 }, 1, true)).toThrow("bounds");
+    expect(gb.placeShip({ x: 11, y: 0 }, 1, true)).toBeFalsy();
   });
 
-  test("placing ship that wont fit throws", () => {
-    expect(() => gb.placeShip(zero, 11, true)).toThrow("bounds");
+  test("placing ship that wont fit returns false", () => {
+    expect(gb.placeShip(zero, 11, true)).toBeFalsy();
   });
 
   test("aborted ship placement clears board state", () => {
-    expect(() => gb.placeShip(zero, 11, true)).toThrow("bounds");
+    expect(gb.placeShip(zero, 11, true)).toBeFalsy();
     expect(gb.hasShipAt(zero)).toBeFalsy();
   });
 
   test("placing overlapping ships throws", () => {
     gb.placeShip(zero, 2, false);
-    expect(() => gb.placeShip(zero, 2, true)).toThrow("overlap");
+    expect(gb.placeShip(zero, 2, true)).toBeFalsy();
   });
 
   test("unattacked positions have null boardhit state", () => {
@@ -100,7 +100,7 @@ describe("Gameboard", () => {
   });
 
   test("aborted ship placements dont count for board sunk status", () => {
-    expect(() => gb.placeShip(zero, 11, false)).toThrow("bound");
+    expect(gb.placeShip(zero, 11, false)).toBeFalsy();
     gb.placeShip(zero, 2, false);
     gb.receiveAttack(zero);
     gb.receiveAttack({ x: 1, y: 0 });

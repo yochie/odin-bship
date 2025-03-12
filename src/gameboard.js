@@ -45,11 +45,13 @@ export class GameBoard {
       const x = isVertical ? startX : startX + offset;
       const y = isVertical ? startY + offset : startY;
       if (!this.#isOnBoard(x, y)) {
-        throw new Error("Ship is out of bounds");
+        // throw new Error("Ship is out of bounds");
+        return false;
       }
 
       if (this.#shipPositions[x][y]) {
-        throw new Error("Cannot place overlapping ships");
+        // throw new Error("Cannot place overlapping ships");
+        return false;
       }
     }
 
@@ -63,6 +65,7 @@ export class GameBoard {
     }
 
     this.#ships.push(ship);
+    return true;
   }
 
   receiveAttack(position) {
