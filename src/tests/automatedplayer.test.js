@@ -1,7 +1,7 @@
 import AutomatedPlayer from "../automatedplayer";
 import DumbAI from "../dumbai";
 import GameState from "../gamestate";
-import { createDefaultGameState } from "../gamestatefactory";
+import { createTestGameStatePVB } from "../gamestatefactory";
 
 let attackSpy = jest.spyOn(GameState.prototype, "attack");
 let endTurnSpy = jest.spyOn(GameState.prototype, "endTurn");
@@ -12,7 +12,7 @@ describe("automated player", () => {
 
   beforeEach(() => {
     autoPlayer = new AutomatedPlayer(new DumbAI());
-    gameState = createDefaultGameState();
+    gameState = createTestGameStatePVB();
     gameState.start();
   });
 

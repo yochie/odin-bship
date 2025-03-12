@@ -6,18 +6,19 @@ import { GameBoard } from "./gameboard.js";
 import DumbAI from "./dumbai.js";
 import AutomatedPlayer from "./automatedplayer.js";
 
-function createPlayer(boardSize, isBot) {
-  const board = createDefaultBoard(boardSize);
-  const player = new Player(board, isBot);
+function createPlayerWithTestBoard(isBot) {
+  const board = createSingleShipTestBoard();
+  const player = new Player(board, isBot, true);
   return player;
 }
 
-function createPlayerWithBoard(board, isBot) {
-  const player = new Player(board, isBot);
+function createPlayerWithBoard(board, isBot, isPlaced) {
+  const player = new Player(board, isBot, isPlaced);
   return player;
 }
 
-function createDefaultBoard(size) {
+function createSingleShipTestBoard() {
+  const size = 3;
   const board = new GameBoard(size, size);
   try {
     board.placeShip({ x: 0, y: 0 }, 1, true);
@@ -28,14 +29,13 @@ function createDefaultBoard(size) {
 }
 
 //p1 is human, p2 is bot
-//single 1 unit ship at zero
-function createDefaultGameState() {
-  const boardSize = 3;
+//uses default board (pre filled)
+function createTestGameStatePVB() {
   const turnTracker = new TurnTracker();
   const playerManager = new PlayerManager();
 
-  let humanPlayer = createPlayer(boardSize, false);
-  let botPlayer = createPlayer(boardSize, true);
+  let humanPlayer = createPlayerWithTestBoard(false);
+  let botPlayer = createPlayerWithTestBoard(true);
 
   playerManager.addPlayer(humanPlayer);
   playerManager.addPlayer(botPlayer);
@@ -47,16 +47,17 @@ function createDefaultGameState() {
   return gameState;
 }
 
-function createDefaultGameStateWithoutBots() {
-  const boardSize = 3;
+//both players human
+//uses default prefilled board
+function createTestGameStatePVP() {
   const turnTracker = new TurnTracker();
   const playerManager = new PlayerManager();
 
-  let humanPlayer1 = createPlayer(boardSize, false);
-  let humanPlayer2 = createPlayer(boardSize, false);
+  let p1 = createPlayerWithTestBoard(false);
+  let p2 = createPlayerWithTestBoard(false);
 
-  playerManager.addPlayer(humanPlayer1);
-  playerManager.addPlayer(humanPlayer2);
+  playerManager.addPlayer(p1);
+  playerManager.addPlayer(p2);
 
   let ai = new DumbAI();
   let automatedPlayer = new AutomatedPlayer(ai);
@@ -65,22 +66,24 @@ function createDefaultGameStateWithoutBots() {
   return gameState;
 }
 
-function createRicherGameState() {
+//both players human
+//fills boards with multiple ships
+function createsTestGameStateMultishipPVP() {
   const boardSize = 3;
   const turnTracker = new TurnTracker();
   const playerManager = new PlayerManager();
 
-  let board1 = createDefaultBoard(boardSize);
+  let board1 = createSingleShipTestBoard();
   board1.placeShip({ x: 2, y: 2 }, 1, false);
 
-  let board2 = createDefaultBoard(boardSize);
+  let board2 = createSingleShipTestBoard();
   board2.placeShip({ x: 2, y: 2 }, 1, false);
 
-  let humanPlayer1 = createPlayerWithBoard(board1, false);
-  let humanPlayer2 = createPlayerWithBoard(board2, false);
+  let p1 = createPlayerWithBoard(board1, false);
+  let p2 = createPlayerWithBoard(board2, false);
 
-  playerManager.addPlayer(humanPlayer1);
-  playerManager.addPlayer(humanPlayer2);
+  playerManager.addPlayer(p1);
+  playerManager.addPlayer(p2);
 
   let ai = new DumbAI();
   let automatedPlayer = new AutomatedPlayer(ai);
@@ -90,7 +93,7 @@ function createRicherGameState() {
 }
 
 export {
-  createDefaultGameState,
-  createDefaultGameStateWithoutBots,
-  createRicherGameState,
+  createTestGameStatePVB as createTestGameStatePVB,
+  createTestGameStatePVP as createTestGameStatePVP,
+  createsTestGameStateMultishipPVP as createTestGameStateMultishipPVP,
 };

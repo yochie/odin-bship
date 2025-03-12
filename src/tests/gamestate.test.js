@@ -1,6 +1,6 @@
 import {
-  createDefaultGameState,
-  createDefaultGameStateWithoutBots,
+  createTestGameStatePVB,
+  createTestGameStatePVP,
 } from "../gamestatefactory";
 import TurnTracker from "../turntracker";
 import AutomatedPlayer from "../automatedplayer";
@@ -15,7 +15,7 @@ describe("game state", () => {
   let zero = { x: 0, y: 0 };
 
   beforeEach(() => {
-    gameState = createDefaultGameState();
+    gameState = createTestGameStatePVB();
     swapSpy.mockClear();
     startTurnSpy.mockClear();
     aiSpy.mockClear();
@@ -44,7 +44,7 @@ describe("game state", () => {
 
   test("cant start turn before game", () => {
     //need to use humans only as bots will auto start turns
-    gameState = createDefaultGameStateWithoutBots();
+    gameState = createTestGameStatePVP();
     expect(() => gameState.startTurn()).toThrow();
   });
 
@@ -58,13 +58,13 @@ describe("game state", () => {
 
   test("attack fails if game not started", () => {
     //need to use humans only as bots will auto start turns
-    gameState = createDefaultGameStateWithoutBots();
+    gameState = createTestGameStatePVP();
     expect(gameState.attack({ x: 0, y: 0 })).toBeFalsy();
   });
 
   test("attack fails if turn not started", () => {
     //need to use humans only as bots will auto start turns
-    gameState = createDefaultGameStateWithoutBots();
+    gameState = createTestGameStatePVP();
     gameState.start();
     expect(gameState.attack({ x: 0, y: 0 })).toBeFalsy();
   });
@@ -81,7 +81,7 @@ describe("game state", () => {
 
   test("end turn fails if before turn start", () => {
     //need to use humans only as bots will auto start turns
-    gameState = createDefaultGameStateWithoutBots();
+    gameState = createTestGameStatePVP();
     gameState.start();
     expect(gameState.endTurn()).toBeFalsy();
   });

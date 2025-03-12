@@ -8,13 +8,13 @@ import PlayerManager from "./playermanager.js";
 import Player from "./player.js";
 import GameBoard from "./gameboard.js";
 import {
-  createDefaultGameState,
-  createDefaultGameStateWithoutBots,
-  createRicherGameState,
+  createTestGameStatePVB,
+  createTestGameStatePVP,
+  createTestGameStateMultishipPVP,
 } from "./gamestatefactory.js";
 import PlayerView from "./playerview.js";
 
-const gameState = createRicherGameState();
+const gameState = createTestGameStateMultishipPVP();
 const activeBoardView = new BoardView(
   document.getElementById("active-board"),
   true,

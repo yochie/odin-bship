@@ -1,5 +1,5 @@
 import BoardView from "./boardview.js";
-import { createDefaultGameState } from "./gamestatefactory.js";
+import { createTestGameStatePVB } from "./gamestatefactory.js";
 
 //defines handlers for ui events
 //these handlers usually alter the game state in some fashion
@@ -43,7 +43,7 @@ export default class InputHandler {
 
   handleReset(event) {
     //rather than mutate current gamestate, just create a whole new one
-    this.gameState = createDefaultGameState();
+    this.gameState = createTestGameStatePVB();
     return this.gameState;
   }
 
