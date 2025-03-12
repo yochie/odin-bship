@@ -11,26 +11,43 @@
       <button class="reset-button">Reset</button>
     </div>
     <div class="game-start-screen">
-      <h2>Starting new game...</h2>
+      <h3>Starting new game...</h3>
       <p class="human-opponent-message">
         Make sure your opponent can't see the screen.
       </p>
-      <button class="start-button">Start</button>
+      <button class="start-button large-button">Start</button>
+    </div>
+    <div class="placement-screen">
+      <h3>Place your ships</h3>
+      <div class="player-title">Player 1</div>
+      <div class="placement-grid">
+        <div class="gameboard-section">
+          <div class="gameboard" id="placement-board"></div>
+        </div>
+        <div class="gameboard-section">
+          <div class="placement-menu">
+            <button class="large-button generate-board-button">
+              Randomize
+            </button>
+            <button class="large-button">Done</button>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="turn-swap-screen">
-      <h2>Swapping players...</h2>
+      <h3>Swapping players...</h3>
       <p class="swap-message">Turn: Player 1</p>
       <p>Make sure your opponent can't see the screen.</p>
-      <button class="start-turn-button">Start turn</button>
+      <button class="start-turn-button large-button">Start turn</button>
     </div>
     <div class="game-over-screen">
-      <h2>Game Over...</h2>
+      <h3>Game Over...</h3>
       <div class="gameboards">
         <div class="gameboard-header">
-          <h2>Player 1</h2>
+          <h3 class="player-title">Player 1</h3>
         </div>
         <div class="gameboard-header">
-          <h2>Player 2</h2>
+          <h3 class="player-title">Player 2</h3>
         </div>
         <div class="gameboard-section">
           <div id="game-over-board-0" class="gameboard"></div>
@@ -43,12 +60,12 @@
     <div class="gameboards game-boards-screen">
       <div class="gameboard-header">
         <div class="player-view">
-          <h2>You</h2>
+          <h3 class="player-title">You</h3>
         </div>
       </div>
       <div class="gameboard-header">
         <div class="opponent-view">
-          <h2>Opponent</h2>
+          <h3 class="player-title">Opponent</h3>
         </div>
         <p class="attack-state">Choose target...</p>
         <button class="end-turn-button">End turn</button>

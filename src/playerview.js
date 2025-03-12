@@ -3,7 +3,7 @@ export default class PlayerView {
   #title;
   constructor(node) {
     this.#container = node;
-    this.#title = this.#container.querySelector("h2");
+    this.#title = this.#container.querySelector(".player-title");
   }
 
   //todo: change to icon for human vs bot

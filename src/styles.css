@@ -53,26 +53,52 @@ button {
   padding: 10px;
 }
 
-.header h2 {
+.large-button {
+  padding: 20px 40px;
+  font-weight: bold;
+}
+
+h2 {
   font-weight: bold;
   font-size: 3rem;
 }
 
+h3 {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
 .game-over-screen,
 .game-start-screen,
+.placement-screen,
 .game-boards-screen,
 .turn-swap-screen {
   display: none;
 }
 
 .game-boards-screen.active,
-.game-over-screen .gameboards {
+.game-over-screen .gameboards,
+.placement-screen.active .placement-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto 1fr;
   gap: 20px;
   padding: 50px;
   align-self: stretch;
+}
+
+.player-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.placement-menu {
+  display: grid;
+  gap: 20px;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
 }
 
 .gameboard-section {
@@ -84,11 +110,6 @@ button {
 
 .gameboard-header {
   text-align: center;
-}
-
-.gameboard-header h2 {
-  font-weight: bold;
-  font-size: 2rem;
 }
 
 .gameboard {
@@ -113,26 +134,15 @@ button {
 
 .game-over-screen.active,
 .game-start-screen.active,
-.turn-swap-screen.active {
+.turn-swap-screen.active,
+.placement-screen.active {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 20px;
 }
-.start-button,
-.start-turn-button {
-  padding: 20px;
-  font-weight: bold;
-}
 
 .turn-swap-screen .swap-message {
   font-weight: bold;
-}
-
-.game-start-screen h2,
-.game-over-screen h2,
-.turn-swap-screen h2 {
-  font-weight: bold;
-  font-size: 2rem;
 }

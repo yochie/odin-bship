@@ -6,10 +6,13 @@ import {
   createTestGameStatePVB,
   createTestGameStatePVP,
   createTestGameStateMultishipPVP,
+  createStartingGameStatePVP,
 } from "./gamestatefactory.js";
 import PlayerView from "./playerview.js";
 
-const gameState = createTestGameStateMultishipPVP();
+// const gameState = createTestGameStateMultishipPVP();
+const boardSize = 10;
+const gameState = createStartingGameStatePVP(10, [1, 2, 3]);
 const activeBoardView = new BoardView(
   document.getElementById("active-board"),
   true,
@@ -23,7 +26,9 @@ const endTurnButton = document.querySelector(".end-turn-button");
 const startTurnButton = document.querySelector(".start-turn-button");
 const gameOverNode = document.querySelector(".game-over-screen");
 const resetButton = document.querySelector(".reset-button");
+const generateBoardButton = document.querySelector(".generate-board-button");
 const gameStartNode = document.querySelector(".game-start-screen");
+const placementNode = document.querySelector(".placement-screen");
 const turnSwapNode = document.querySelector(".turn-swap-screen");
 const instructionNode = document.querySelector(".attack-state");
 const gameBoardNode = document.querySelector(".game-boards-screen");
@@ -33,6 +38,11 @@ gameOverBoardViews.push(
 );
 gameOverBoardViews.push(
   new BoardView(document.getElementById("game-over-board-1"), true),
+);
+
+const placementView = new BoardView(
+  document.getElementById("placement-board"),
+  true,
 );
 
 const playerView = new PlayerView(document.querySelector(".player-view"));
@@ -47,12 +57,15 @@ const uiManager = new UIManager(
   startTurnButton,
   endTurnButton,
   resetButton,
+  generateBoardButton,
   gameOverNode,
   gameStartNode,
+  placementNode,
   turnSwapNode,
   gameBoardNode,
   instructionNode,
   gameOverBoardViews,
+  placementView,
 );
 
 const inputHandler = new InputHandler(gameState, uiManager);

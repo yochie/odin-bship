@@ -4,6 +4,8 @@ const BOARDS = "boards";
 const START = "start";
 const OVER = "over";
 const SWAP = "swap";
+const SETUP = "setup";
+const PLACEMENT = "placement";
 
 export default class UIManager {
   //board views
@@ -12,15 +14,17 @@ export default class UIManager {
   #gameOverBoardViews;
   #playerView;
   #opponentView;
+  #placementView;
 
   //buttons
   #startButton;
   #endTurnButton;
   #resetButton;
   #startTurnButton;
+  #generateBoardButton;
 
   //map of screen keys to dom nodes
-  #views;
+  #screens;
 
   //sub node for board view
   #instructionNode;
@@ -31,6 +35,7 @@ export default class UIManager {
   #endTurnHandlers;
   #resetHandlers;
   #startTurnHandlers;
+  #generateBoardHandlers;
 
   constructor(
     playerBoardView,
@@ -41,25 +46,30 @@ export default class UIManager {
     startTurnButton,
     endTurnButton,
     resetButton,
+    generateBoardButton,
     gameOverNode,
     gameStartNode,
+    placementNode,
     turnSwapNode,
     gameBoardNode,
     instructionNode,
     gameOverBoardViews,
+    placementView,
   ) {
     //dom buttons
     this.#startButton = startButton;
     this.#endTurnButton = endTurnButton;
     this.#resetButton = resetButton;
     this.#startTurnButton = startTurnButton;
+    this.#generateBoardButton = generateBoardButton;
 
     //view nodes
-    this.#views = new Map();
-    this.#views.set(OVER, gameOverNode);
-    this.#views.set(START, gameStartNode);
-    this.#views.set(BOARDS, gameBoardNode);
-    this.#views.set(SWAP, turnSwapNode);
+    this.#screens = new Map();
+    this.#screens.set(OVER, gameOverNode);
+    this.#screens.set(START, gameStartNode);
+    this.#screens.set(BOARDS, gameBoardNode);
+    this.#screens.set(SWAP, turnSwapNode);
+    this.#screens.set(PLACEMENT, placementNode);
 
     //sub node for board view
     this.#instructionNode = instructionNode;
@@ -70,6 +80,7 @@ export default class UIManager {
     this.#playerView = playerView;
     this.#opponentView = opponentView;
     this.#gameOverBoardViews = gameOverBoardViews;
+    this.#placementView = placementView;
 
     //handlers lists
     this.#attackHandlers = [];
@@ -77,6 +88,7 @@ export default class UIManager {
     this.#endTurnHandlers = [];
     this.#resetHandlers = [];
     this.#startTurnHandlers = [];
+    this.#generateBoardHandlers = [];
 
     //register event listeners
     this.#opponentBoardView.container.addEventListener("click", (event) => {
@@ -91,6 +103,9 @@ export default class UIManager {
     this.#resetButton.addEventListener("click", (event) => this.onReset(event));
     this.#startTurnButton.addEventListener("click", (event) =>
       this.onStartTurn(event),
+    );
+    this.#generateBoardButton.addEventListener("click", (event) =>
+      this.onGenerateBoard(event),
     );
   }
 
@@ -112,6 +127,10 @@ export default class UIManager {
 
   addStartTurnHandler(callback) {
     this.#startTurnHandlers.push(callback);
+  }
+
+  addGenerateBoardHandler(callback) {
+    this.#generateBoardHandlers.push(callback);
   }
 
   onAttack(event) {
@@ -158,6 +177,14 @@ export default class UIManager {
     this.update(gameState);
   }
 
+  onGenerateBoard(event) {
+    let gameState = null;
+    for (const handler of this.#generateBoardHandlers) {
+      gameState = handler(event);
+    }
+    this.update(gameState);
+  }
+
   update(gameState) {
     //in case no even handlers are registered and update is called needlessly
     if (gameState === null) {
@@ -168,6 +195,12 @@ export default class UIManager {
 
     if (!turnTracker.isGameStarted()) {
       this.displayScreen(START);
+      return;
+    }
+
+    if (!players.isPlacementDone()) {
+      this.displayScreen(PLACEMENT);
+      this.fillPlacementScreen(gameState);
       return;
     }
 
@@ -209,8 +242,17 @@ export default class UIManager {
     this.displayScreen(BOARDS);
   }
 
+  fillPlacementScreen(gameState) {
+    const screen = this.#screens.get(PLACEMENT);
+    const playerTitle = screen.querySelector(".player-title");
+    const activePlayer = gameState.activePlayer();
+    const playerIndex = gameState.playerManager.getIndex(activePlayer);
+    playerTitle.textContent = `Player ${playerIndex + 1}`;
+    this.#placementView.render(activePlayer.gameBoard);
+  }
+
   fillSwapScreen(playerIndex) {
-    const swapNode = this.#views.get(SWAP);
+    const swapNode = this.#screens.get(SWAP);
     const swapMessage = swapNode.querySelector(".swap-message");
     swapMessage.textContent = `Turn: Player ${playerIndex + 1}`;
   }
@@ -224,7 +266,7 @@ export default class UIManager {
   }
 
   displayScreen(screen) {
-    for (const [key, view] of this.#views) {
+    for (const [key, view] of this.#screens) {
       if (key === screen) {
         view.classList.add("active");
       } else {

@@ -59,16 +59,13 @@ function createTestGameStatePVP() {
   playerManager.addPlayer(p1);
   playerManager.addPlayer(p2);
 
-  let ai = new DumbAI();
-  let automatedPlayer = new AutomatedPlayer(ai);
-
-  const gameState = new GameState(turnTracker, playerManager, automatedPlayer);
+  const gameState = new GameState(turnTracker, playerManager);
   return gameState;
 }
 
 //both players human
 //fills boards with multiple ships
-function createsTestGameStateMultishipPVP() {
+function createTestGameStateMultishipPVP() {
   const boardSize = 3;
   const turnTracker = new TurnTracker();
   const playerManager = new PlayerManager();
@@ -79,8 +76,42 @@ function createsTestGameStateMultishipPVP() {
   let board2 = createSingleShipTestBoard();
   board2.placeShip({ x: 2, y: 2 }, 1, false);
 
-  let p1 = createPlayerWithBoard(board1, false);
-  let p2 = createPlayerWithBoard(board2, false);
+  let p1 = createPlayerWithBoard(board1, false, true);
+  let p2 = createPlayerWithBoard(board2, false, true);
+
+  playerManager.addPlayer(p1);
+  playerManager.addPlayer(p2);
+
+  const gameState = new GameState(turnTracker, playerManager);
+  return gameState;
+}
+
+function createStartingGameStatePVP(boardSize, shipSizes) {
+  const turnTracker = new TurnTracker();
+  const playerManager = new PlayerManager();
+
+  let board1 = new GameBoard(boardSize, boardSize);
+  let board2 = new GameBoard(boardSize, boardSize);
+
+  let p1 = createPlayerWithBoard(board1, false, false);
+  let p2 = createPlayerWithBoard(board2, false, false);
+
+  playerManager.addPlayer(p1);
+  playerManager.addPlayer(p2);
+
+  const gameState = new GameState(turnTracker, playerManager, null, shipSizes);
+  return gameState;
+}
+
+function createStartingGameStatePVB(boardSize, shipSizes) {
+  const turnTracker = new TurnTracker();
+  const playerManager = new PlayerManager();
+
+  let board1 = new GameBoard(boardSize, boardSize);
+  let board2 = new GameBoard(boardSize, boardSize);
+
+  let p1 = createPlayerWithBoard(board1, false, false);
+  let p2 = createPlayerWithBoard(board2, true, false);
 
   playerManager.addPlayer(p1);
   playerManager.addPlayer(p2);
@@ -88,12 +119,19 @@ function createsTestGameStateMultishipPVP() {
   let ai = new DumbAI();
   let automatedPlayer = new AutomatedPlayer(ai);
 
-  const gameState = new GameState(turnTracker, playerManager, automatedPlayer);
+  const gameState = new GameState(
+    turnTracker,
+    playerManager,
+    automatedPlayer,
+    shipSizes,
+  );
   return gameState;
 }
 
 export {
-  createTestGameStatePVB as createTestGameStatePVB,
-  createTestGameStatePVP as createTestGameStatePVP,
-  createsTestGameStateMultishipPVP as createTestGameStateMultishipPVP,
+  createTestGameStatePVB,
+  createTestGameStatePVP,
+  createTestGameStateMultishipPVP,
+  createStartingGameStatePVP,
+  createStartingGameStatePVB,
 };

@@ -1,12 +1,19 @@
 export default class GameState {
+  shipSizes;
   turnTracker;
   playerManager;
   #automatedPlayer;
 
-  constructor(turnTracker, playerManager, automatedPlayer) {
+  constructor(
+    turnTracker,
+    playerManager,
+    automatedPlayer = null,
+    shipSizes = [1],
+  ) {
     this.turnTracker = turnTracker;
     this.playerManager = playerManager;
     this.#automatedPlayer = automatedPlayer;
+    this.shipSizes = shipSizes;
   }
 
   start() {

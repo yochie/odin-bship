@@ -1,3 +1,4 @@
+import BoardGenerator from "./boardgenerator.js";
 import BoardView from "./boardview.js";
 import { createTestGameStatePVB } from "./gamestatefactory.js";
 
@@ -19,6 +20,9 @@ export default class InputHandler {
     this.uiManager.addEndTurnHandler((event) => this.handleEndTurn(event));
     this.uiManager.addResetHandler((event) => this.handleReset(event));
     this.uiManager.addStartTurnHandler((event) => this.handleStartTurn(event));
+    this.uiManager.addGenerateBoardHandler((event) =>
+      this.handleGenerateBoard(event),
+    );
   }
 
   handleAttack(event) {
@@ -49,6 +53,19 @@ export default class InputHandler {
 
   handleStartTurn(event) {
     this.gameState.startTurn();
+    return this.gameState;
+  }
+
+  handleGenerateBoard(even) {
+    const player = this.gameState.activePlayer();
+    const previousBoard = player.gameBoard;
+    const boardSize = previousBoard.width;
+    player.gameBoard = BoardGenerator.generate(
+      boardSize,
+      this.gameState.shipSizes,
+    );
+    player.setBoardPlaced();
+
     return this.gameState;
   }
 }
