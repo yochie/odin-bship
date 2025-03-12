@@ -43,4 +43,16 @@ export default class PlayerManager {
     }
     return false;
   }
+
+  isPlacementDone() {
+    if (this.#players.length === 0) {
+      return false;
+    }
+    for (let p of this.#players) {
+      if (!p.isBoardPlaced()) {
+        return false;
+      }
+    }
+    return true;
+  }
 }

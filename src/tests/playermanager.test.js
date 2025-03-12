@@ -20,6 +20,7 @@ describe("Player manager", () => {
     expect(playerManager.isGameOver).toBeDefined();
     expect(playerManager.isVersusBot).toBeDefined();
     expect(playerManager.getIndex).toBeDefined();
+    expect(playerManager.isPlacementDone).toBeDefined();
   });
 
   test("empty initially", () => {
@@ -95,5 +96,41 @@ describe("Player manager", () => {
     playerManager.addPlayer(player1);
     playerManager.addPlayer(player2);
     expect(playerManager.getIndex(player2)).toEqual(1);
+  });
+
+  test("placement not done if not done for all", () => {
+    let player1 = new Player(
+      new GameBoard(boardWidth, boardHeight),
+      false,
+      false,
+    );
+    let player2 = new Player(
+      new GameBoard(boardWidth, boardHeight),
+      false,
+      true,
+    );
+    playerManager.addPlayer(player1);
+    playerManager.addPlayer(player2);
+    expect(playerManager.isPlacementDone()).toBeFalsy();
+  });
+
+  test("placement done if done for all", () => {
+    let player1 = new Player(
+      new GameBoard(boardWidth, boardHeight),
+      false,
+      true,
+    );
+    let player2 = new Player(
+      new GameBoard(boardWidth, boardHeight),
+      false,
+      true,
+    );
+    playerManager.addPlayer(player1);
+    playerManager.addPlayer(player2);
+    expect(playerManager.isPlacementDone()).toBeTruthy();
+  });
+
+  test("placement not done if no players", () => {
+    expect(playerManager.isPlacementDone()).toBeFalsy();
   });
 });
