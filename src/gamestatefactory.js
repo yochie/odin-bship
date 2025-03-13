@@ -5,6 +5,7 @@ import Player from "./player.js";
 import { GameBoard } from "./gameboard.js";
 import DumbAI from "./dumbai.js";
 import AutomatedPlayer from "./automatedplayer.js";
+import BoardGenerator from "./boardgenerator.js";
 
 function createPlayerWithTestBoard(isBot) {
   const board = createSingleShipTestBoard();
@@ -90,8 +91,8 @@ function createStartingGameStatePVP(boardSize, shipSizes) {
   const turnTracker = new TurnTracker();
   const playerManager = new PlayerManager();
 
-  let board1 = new GameBoard(boardSize, boardSize);
-  let board2 = new GameBoard(boardSize, boardSize);
+  let board1 = BoardGenerator.generate(boardSize, shipSizes);
+  let board2 = BoardGenerator.generate(boardSize, shipSizes);
 
   let p1 = createPlayerWithBoard(board1, false, false);
   let p2 = createPlayerWithBoard(board2, false, false);
@@ -107,8 +108,8 @@ function createStartingGameStatePVB(boardSize, shipSizes) {
   const turnTracker = new TurnTracker();
   const playerManager = new PlayerManager();
 
-  let board1 = new GameBoard(boardSize, boardSize);
-  let board2 = new GameBoard(boardSize, boardSize);
+  let board1 = BoardGenerator.generate(boardSize, shipSizes);
+  let board2 = BoardGenerator.generate(boardSize, shipSizes);
 
   let p1 = createPlayerWithBoard(board1, false, false);
   let p2 = createPlayerWithBoard(board2, true, false);
