@@ -17,7 +17,8 @@ export default class UIManager {
   #placementView;
 
   //buttons
-  #startButton;
+  #startPVPButton;
+  #startPVBButton;
   #endTurnButton;
   #resetButton;
   #startTurnButton;
@@ -32,7 +33,8 @@ export default class UIManager {
 
   //handlers
   #attackHandlers;
-  #startHandlers;
+  #startPVPHandlers;
+  #startPVBHandlers;
   #endTurnHandlers;
   #resetHandlers;
   #startTurnHandlers;
@@ -44,7 +46,8 @@ export default class UIManager {
     opponentBoardView,
     playerView,
     opponentView,
-    startButton,
+    startPVPButton,
+    startPVBButton,
     startTurnButton,
     endTurnButton,
     resetButton,
@@ -60,7 +63,8 @@ export default class UIManager {
     placementView,
   ) {
     //dom buttons
-    this.#startButton = startButton;
+    this.#startPVPButton = startPVPButton;
+    this.#startPVBButton = startPVBButton;
     this.#endTurnButton = endTurnButton;
     this.#resetButton = resetButton;
     this.#startTurnButton = startTurnButton;
@@ -88,7 +92,8 @@ export default class UIManager {
 
     //handlers lists
     this.#attackHandlers = [];
-    this.#startHandlers = [];
+    this.#startPVPHandlers = [];
+    this.#startPVBHandlers = [];
     this.#endTurnHandlers = [];
     this.#resetHandlers = [];
     this.#startTurnHandlers = [];
@@ -99,8 +104,11 @@ export default class UIManager {
     this.#opponentBoardView.container.addEventListener("click", (event) => {
       this.onAttack(event);
     });
-    this.#startButton.addEventListener("click", (event) =>
-      this.onStartGame(event),
+    this.#startPVPButton.addEventListener("click", (event) =>
+      this.onStartPVPGame(event),
+    );
+    this.#startPVBButton.addEventListener("click", (event) =>
+      this.onStartPVBGame(event),
     );
     this.#endTurnButton.addEventListener("click", (event) =>
       this.onEndTurn(event),
@@ -121,8 +129,12 @@ export default class UIManager {
     this.#attackHandlers.push(callback);
   }
 
-  addStartHandler(callback) {
-    this.#startHandlers.push(callback);
+  addStartPVPHandler(callback) {
+    this.#startPVPHandlers.push(callback);
+  }
+
+  addStartPVBHandler(callback) {
+    this.#startPVBHandlers.push(callback);
   }
 
   addEndTurnHandler(callback) {
@@ -157,9 +169,17 @@ export default class UIManager {
     this.update(gameState);
   }
 
-  onStartGame(event) {
+  onStartPVPGame(event) {
     let gameState;
-    for (const handler of this.#startHandlers) {
+    for (const handler of this.#startPVPHandlers) {
+      gameState = handler(event);
+    }
+    this.update(gameState);
+  }
+
+  onStartPVBGame(event) {
+    let gameState;
+    for (const handler of this.#startPVBHandlers) {
       gameState = handler(event);
     }
     this.update(gameState);
@@ -206,17 +226,13 @@ export default class UIManager {
   }
 
   update(gameState) {
-    //in case no even handlers are registered and update is called needlessly
+    //before game start or if no handler registered (should not happen)
     if (gameState === null) {
+      this.displayScreen(START);
       return;
     }
     const turnTracker = gameState.turnTracker;
     const players = gameState.playerManager;
-
-    if (!turnTracker.isGameStarted()) {
-      this.displayScreen(START);
-      return;
-    }
 
     if (!players.isPlacementDone()) {
       this.displayScreen(PLACEMENT);

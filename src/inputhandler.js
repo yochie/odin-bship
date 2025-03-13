@@ -1,6 +1,10 @@
 import BoardGenerator from "./boardgenerator.js";
 import BoardView from "./boardview.js";
-import { createTestGameStatePVB } from "./gamestatefactory.js";
+import {
+  createStartingGameStatePVP,
+  createStartingGameStatePVB,
+} from "./gamestatefactory.js";
+import { boardSize, ships } from "./settings.js";
 
 //defines handlers for ui events
 //these handlers usually alter the game state in some fashion
@@ -16,7 +20,8 @@ export default class InputHandler {
     this.uiManager = uiManager;
 
     this.uiManager.addAttackHandler((event) => this.handleAttack(event));
-    this.uiManager.addStartHandler((event) => this.handleStart(event));
+    this.uiManager.addStartPVPHandler((event) => this.handleStartPVP(event));
+    this.uiManager.addStartPVBHandler((event) => this.handleStartPVB(event));
     this.uiManager.addEndTurnHandler((event) => this.handleEndTurn(event));
     this.uiManager.addResetHandler((event) => this.handleReset(event));
     this.uiManager.addStartTurnHandler((event) => this.handleStartTurn(event));
@@ -38,8 +43,13 @@ export default class InputHandler {
     return this.gameState;
   }
 
-  handleStart(event) {
-    this.gameState.start();
+  handleStartPVP(event) {
+    this.gameState = createStartingGameStatePVP(boardSize, ships);
+    return this.gameState;
+  }
+
+  handleStartPVB(event) {
+    this.gameState = createStartingGameStatePVB(boardSize, ships);
     return this.gameState;
   }
 
@@ -49,8 +59,7 @@ export default class InputHandler {
   }
 
   handleReset(event) {
-    //rather than mutate current gamestate, just create a whole new one
-    this.gameState = createTestGameStatePVB();
+    this.gameState = null;
     return this.gameState;
   }
 
@@ -74,14 +83,20 @@ export default class InputHandler {
   handlePlacementDone(event) {
     const player = this.gameState.activePlayer();
     player.setBoardPlaced();
+
+    //single player
+    if (this.gameState.playerManager.isVersusBot()) {
+      this.gameState.start();
+      return this.gameState;
+    }
+
+    //two players
     if (!this.gameState.playerManager.isPlacementDone()) {
       this.gameState.turnTracker.swapTurn();
     } else {
-      const goFirst = Math.random() < 0.5;
-      if (!goFirst) {
-        this.gameState.turnTracker.swapTurn();
-      }
+      this.gameState.start();
     }
+
     return this.gameState;
   }
 }

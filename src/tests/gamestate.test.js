@@ -138,14 +138,6 @@ describe("game state", () => {
     expect(startTurnSpy).toHaveBeenCalledTimes(3);
   });
 
-  test("active player throws before game start", () => {
-    expect(() => gameState.activePlayer()).toThrow();
-  });
-
-  test("inactive player throws before game start", () => {
-    expect(() => gameState.inactivePlayer()).toThrow();
-  });
-
   test("active returned after game start", () => {
     gameState.start();
     expect(gameState.activePlayer()).toBeInstanceOf(Player);

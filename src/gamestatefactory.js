@@ -112,7 +112,7 @@ function createStartingGameStatePVB(boardSize, shipSizes) {
   let board2 = BoardGenerator.generate(boardSize, shipSizes);
 
   let p1 = createPlayerWithBoard(board1, false, false);
-  let p2 = createPlayerWithBoard(board2, true, false);
+  let p2 = createPlayerWithBoard(board2, true, true);
 
   playerManager.addPlayer(p1);
   playerManager.addPlayer(p2);

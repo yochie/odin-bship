@@ -29,11 +29,6 @@ describe("game state", () => {
     expect(tracker.isGameStarted()).toBeTruthy();
   });
 
-  test("no inactive/active player (negative index) before game start", () => {
-    expect(tracker.activePlayer()).toBeLessThan(0);
-    expect(tracker.inactivePlayer()).toBeLessThan(0);
-  });
-
   test("attacks on unstarted game throw", () => {
     expect(() => tracker.attack()).toThrow();
   });

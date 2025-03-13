@@ -19,6 +19,12 @@ export default class GameState {
   start() {
     this.turnTracker.startGame();
 
+    //roll starting player
+    const swap = Math.random() < 0.5;
+    if (swap) {
+      this.turnTracker.swapTurn();
+    }
+
     //bot is otherwise triggered by turn end
     const firstPlayer = this.activePlayer();
     if (firstPlayer.isBot) {
@@ -26,7 +32,7 @@ export default class GameState {
     }
 
     //because turn start is only used to hide screen
-    //when playing against human
+    //when playing against human, auto start here
     //on subsequent turns, turn end handles turn auto start
     if (this.playerManager.isVersusBot()) {
       this.startTurn();

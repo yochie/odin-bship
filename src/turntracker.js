@@ -1,33 +1,27 @@
 const PLAYER_COUNT = 2;
 
 export default class TurnTracker {
+  //tracks active player
+  //can be used during placement (before start)
   #playerTurn;
+
+  //game is started after placement is done
   #gameStarted;
   #attackDone;
   #turnStarted;
 
   constructor() {
     this.#gameStarted = false;
-    this.#playerTurn = -1;
+    this.#playerTurn = 0;
     this.#attackDone = false;
     this.#turnStarted = false;
   }
 
-  //returns index if game is applicable
-  //when no active player, returns -1
   activePlayer() {
-    if (!this.isGameStarted()) {
-      return -1;
-    }
     return this.#playerTurn;
   }
 
-  //returns index if game is applicable
-  //when no active player, returns -1
   inactivePlayer() {
-    if (!this.isGameStarted()) {
-      return -1;
-    }
     return (this.#playerTurn + 1) % PLAYER_COUNT;
   }
 
@@ -55,10 +49,6 @@ export default class TurnTracker {
   }
 
   swapTurn() {
-    if (!this.isGameStarted()) {
-      throw new Error("Game not started. No turn to swap.");
-    }
-
     this.#playerTurn = (this.#playerTurn + 1) % PLAYER_COUNT;
     this.#attackDone = false;
     this.#turnStarted = false;
