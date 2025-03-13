@@ -261,6 +261,7 @@ export default class UIManager {
     this.instructionDisplay(
       turnTracker.isAttackDone(),
       inactivePlayerBoard.lastAttackLanded(),
+      inactivePlayerBoard.lastHitSize(),
     );
 
     this.#playerView.renderForTurn(
@@ -311,7 +312,7 @@ export default class UIManager {
     }
   }
 
-  instructionDisplay(attackDone, attackLanded = false) {
+  instructionDisplay(attackDone, attackLanded = false, shipSize = 0) {
     if (!attackDone) {
       this.#instructionNode.textContent = "Choose target...";
       this.#endTurnButton.style.visibility = "hidden";
@@ -320,7 +321,7 @@ export default class UIManager {
 
     this.#endTurnButton.style.visibility = "visible";
     this.#instructionNode.textContent = attackLanded
-      ? "Its a hit!"
+      ? `Hit a ${shipSize} sized ship!`
       : "Attack missed.";
   }
 }

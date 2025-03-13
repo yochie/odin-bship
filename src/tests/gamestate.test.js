@@ -101,6 +101,8 @@ describe("game state", () => {
 
   test("end turn succeeds under normal conditions", () => {
     gameState.start();
+    //could be redundant if bot goes first but should not matter
+    gameState.startTurn();
     gameState.attack({ x: 1, y: 0 });
     let result = gameState.endTurn();
     expect(result).toBeTruthy();

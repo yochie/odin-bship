@@ -5,6 +5,7 @@ describe("ship", () => {
     expect(Ship).toBeDefined();
     expect(Ship.prototype.hit).toBeDefined();
     expect(Ship.prototype.isSunk).toBeDefined();
+    expect(Ship.prototype.getLength).toBeDefined();
   });
 
   test("ship not sunk by default", () => {
@@ -22,5 +23,10 @@ describe("ship", () => {
     let someShip = new Ship(1);
     someShip.hit();
     expect(() => someShip.hit()).toThrow();
+  });
+
+  test("ship returns correct length", () => {
+    let someShip = new Ship(1);
+    expect(someShip.getLength()).toBe(1);
   });
 });

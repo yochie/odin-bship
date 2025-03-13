@@ -19,6 +19,7 @@ describe("Gameboard", () => {
     expect(gb.hasShipAt).toBeDefined();
     expect(gb.lastAttackLanded).toBeDefined();
     expect(gb.lastHitPosition).toBeDefined();
+    expect(gb.lastHitSize).toBeDefined();
   });
 
   test("empty slots are indeed empty", () => {
@@ -127,5 +128,20 @@ describe("Gameboard", () => {
     const target = { x: 3, y: 3 };
     gb.receiveAttack(target);
     expect(gb.lastHitPosition()).toEqual(target);
+  });
+
+  test("last hit ship size correctly returned", () => {
+    gb.placeShip(zero, 2, false);
+    gb.receiveAttack(zero);
+    expect(gb.lastHitSize()).toBe(2);
+  });
+
+  test("last hit ship size returns -1 if no ship hit", () => {
+    gb.receiveAttack(zero);
+    expect(gb.lastHitSize()).toBe(-1);
+  });
+
+  test("last hit ship size returns -1 if no hits", () => {
+    expect(gb.lastHitSize()).toBe(-1);
   });
 });

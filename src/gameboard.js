@@ -124,4 +124,19 @@ export class GameBoard {
   lastHitPosition() {
     return this.#lastHitPosition;
   }
+
+  lastHitSize() {
+    const position = this.#lastHitPosition;
+    if (position === null) {
+      return -1;
+    }
+
+    if (!this.hasShipAt(position)) {
+      return -1;
+    }
+
+    const hitShip = this.#shipPositions[position.x][position.y];
+
+    return hitShip.getLength();
+  }
 }
