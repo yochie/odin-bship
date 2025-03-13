@@ -12,7 +12,7 @@ import PlayerView from "./playerview.js";
 
 // const gameState = createTestGameStateMultishipPVP();
 const boardSize = 10;
-const gameState = createStartingGameStatePVP(10, [1, 2, 3]);
+const gameState = createStartingGameStatePVP(10, [2, 3, 3, 4, 5]);
 const activeBoardView = new BoardView(
   document.getElementById("active-board"),
   true,
