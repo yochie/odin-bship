@@ -23,6 +23,9 @@ export default class InputHandler {
     this.uiManager.addGenerateBoardHandler((event) =>
       this.handleGenerateBoard(event),
     );
+    this.uiManager.addPlacementDoneHandler((event) =>
+      this.handlePlacementDone(event),
+    );
   }
 
   handleAttack(event) {
@@ -56,7 +59,7 @@ export default class InputHandler {
     return this.gameState;
   }
 
-  handleGenerateBoard(even) {
+  handleGenerateBoard(event) {
     const player = this.gameState.activePlayer();
     const previousBoard = player.gameBoard;
     const boardSize = previousBoard.width;
@@ -64,8 +67,21 @@ export default class InputHandler {
       boardSize,
       this.gameState.shipSizes,
     );
-    player.setBoardPlaced();
 
+    return this.gameState;
+  }
+
+  handlePlacementDone(event) {
+    const player = this.gameState.activePlayer();
+    player.setBoardPlaced();
+    if (!this.gameState.playerManager.isPlacementDone()) {
+      this.gameState.turnTracker.swapTurn();
+    } else {
+      const goFirst = Math.random() < 0.5;
+      if (!goFirst) {
+        this.gameState.turnTracker.swapTurn();
+      }
+    }
     return this.gameState;
   }
 }

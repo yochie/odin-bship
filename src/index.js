@@ -27,6 +27,7 @@ const startTurnButton = document.querySelector(".start-turn-button");
 const gameOverNode = document.querySelector(".game-over-screen");
 const resetButton = document.querySelector(".reset-button");
 const generateBoardButton = document.querySelector(".generate-board-button");
+const placementDoneButton = document.querySelector(".placement-done-button");
 const gameStartNode = document.querySelector(".game-start-screen");
 const placementNode = document.querySelector(".placement-screen");
 const turnSwapNode = document.querySelector(".turn-swap-screen");
@@ -58,6 +59,7 @@ const uiManager = new UIManager(
   endTurnButton,
   resetButton,
   generateBoardButton,
+  placementDoneButton,
   gameOverNode,
   gameStartNode,
   placementNode,

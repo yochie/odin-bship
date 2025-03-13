@@ -22,6 +22,7 @@ export default class UIManager {
   #resetButton;
   #startTurnButton;
   #generateBoardButton;
+  #placementDoneButton;
 
   //map of screen keys to dom nodes
   #screens;
@@ -36,6 +37,7 @@ export default class UIManager {
   #resetHandlers;
   #startTurnHandlers;
   #generateBoardHandlers;
+  #placementDoneHandlers;
 
   constructor(
     playerBoardView,
@@ -47,6 +49,7 @@ export default class UIManager {
     endTurnButton,
     resetButton,
     generateBoardButton,
+    placementDoneButton,
     gameOverNode,
     gameStartNode,
     placementNode,
@@ -62,6 +65,7 @@ export default class UIManager {
     this.#resetButton = resetButton;
     this.#startTurnButton = startTurnButton;
     this.#generateBoardButton = generateBoardButton;
+    this.#placementDoneButton = placementDoneButton;
 
     //view nodes
     this.#screens = new Map();
@@ -89,6 +93,7 @@ export default class UIManager {
     this.#resetHandlers = [];
     this.#startTurnHandlers = [];
     this.#generateBoardHandlers = [];
+    this.#placementDoneHandlers = [];
 
     //register event listeners
     this.#opponentBoardView.container.addEventListener("click", (event) => {
@@ -107,6 +112,9 @@ export default class UIManager {
     this.#generateBoardButton.addEventListener("click", (event) =>
       this.onGenerateBoard(event),
     );
+    this.#placementDoneButton.addEventListener("click", (event) => {
+      this.onPlacementDone(event);
+    });
   }
 
   addAttackHandler(callback) {
@@ -131,6 +139,10 @@ export default class UIManager {
 
   addGenerateBoardHandler(callback) {
     this.#generateBoardHandlers.push(callback);
+  }
+
+  addPlacementDoneHandler(callback) {
+    this.#placementDoneHandlers.push(callback);
   }
 
   onAttack(event) {
@@ -180,6 +192,14 @@ export default class UIManager {
   onGenerateBoard(event) {
     let gameState = null;
     for (const handler of this.#generateBoardHandlers) {
+      gameState = handler(event);
+    }
+    this.update(gameState);
+  }
+
+  onPlacementDone(event) {
+    let gameState = null;
+    for (const handler of this.#placementDoneHandlers) {
       gameState = handler(event);
     }
     this.update(gameState);
