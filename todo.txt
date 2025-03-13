@@ -1,4 +1,3 @@
 annouce hit ship size
 differentiate hit from sunk ship view
 clarify ship boundaries
-mode selection
