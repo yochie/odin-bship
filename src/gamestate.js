@@ -16,6 +16,8 @@ export default class GameState {
     this.shipSizes = shipSizes;
   }
 
+  //rolls starting player
+  //if bot is starting, will play its turn
   start() {
     this.turnTracker.startGame();
 
@@ -29,12 +31,10 @@ export default class GameState {
     const firstPlayer = this.activePlayer();
     if (firstPlayer.isBot) {
       this.#automatedPlayer.playTurn(this);
-    }
-
-    //because turn start is only used to hide screen
-    //when playing against human, auto start here
-    //on subsequent turns, turn end handles turn auto start
-    if (this.playerManager.isVersusBot()) {
+    } else if (this.playerManager.isVersusBot()) {
+      //because turn start is only used to hide screen
+      //when playing against human, auto start human turn here
+      //on subsequent turns, turn end handles turn auto start
       this.startTurn();
     }
   }
