@@ -118,6 +118,7 @@ h3 {
   grid-template-rows: repeat(var(--rows), 1fr);
   grid-template-columns: repeat(var(--cols), 1fr);
   height: 100%;
+  aspect-ratio: 1;
 }
 
 .gameboard .board-cell {
