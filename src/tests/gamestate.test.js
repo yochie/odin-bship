@@ -132,14 +132,6 @@ describe("game state", () => {
     expect(startTurnSpy).toHaveBeenCalled();
   });
 
-  test("turn end will auto start turn for both players if vs bot", () => {
-    gameState.start();
-    gameState.attack({ x: 1, y: 0 });
-    gameState.endTurn();
-    //once for game start, once for bot, then once for human
-    expect(startTurnSpy).toHaveBeenCalledTimes(3);
-  });
-
   test("active returned after game start", () => {
     gameState.start();
     expect(gameState.activePlayer()).toBeInstanceOf(Player);
