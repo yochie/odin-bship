@@ -1,5 +1,10 @@
 import { HIT, MISS } from "./gameboard.js";
 
+const WATER_COLOR = "lightblue";
+const SHIP_COLOR = "black";
+const HIT_COLOR = "red";
+const SUNK_COLOR = "#FFCCCB";
+
 export default class BoardView {
   container;
   #forActivePlayer;
@@ -16,17 +21,19 @@ export default class BoardView {
 
     for (let x = 0; x < board.width; x++) {
       for (let y = 0; y < board.height; y++) {
+        let position = { x, y };
         const cell = document.createElement("div");
         cell.classList.add("board-cell");
         cell.setAttribute("data-x", x);
         cell.setAttribute("data-y", y);
 
         if (this.#forActivePlayer) {
-          cell.style.backgroundColor = board.hasShipAt({ x, y })
-            ? board.hitAt({ x, y }) === HIT
-              ? "red"
-              : "black"
-            : "lightblue";
+          cell.style.backgroundColor = this.getActiveColor(
+            board.hasShipAt(position),
+            board.hitAt(position) === HIT,
+            board.isShipSunkAt(position),
+          );
+
           if (
             board.lastHitPosition() !== null &&
             board.lastHitPosition().x === x &&
@@ -37,10 +44,11 @@ export default class BoardView {
             cell.classList.remove("highlighted");
           }
         } else {
-          cell.style.backgroundColor =
-            board.hitAt({ x, y }) === HIT ? "red" : "lightblue";
+          cell.style.backgroundColor = this.getInactiveColor(
+            board.hitAt(position) === HIT,
+            board.isShipSunkAt(position),
+          );
         }
-
         switch (board.hitAt({ x, y })) {
           case HIT:
             cell.textContent = "X";
@@ -55,6 +63,34 @@ export default class BoardView {
         this.container.appendChild(cell);
       }
     }
+  }
+
+  getActiveColor(isShip, isHit, isSunk) {
+    if (!isShip) {
+      return WATER_COLOR;
+    }
+
+    if (!isHit) {
+      return SHIP_COLOR;
+    }
+
+    if (!isSunk) {
+      return HIT_COLOR;
+    }
+
+    return SUNK_COLOR;
+  }
+
+  getInactiveColor(isHit, isSunk) {
+    if (!isHit) {
+      return WATER_COLOR;
+    }
+
+    if (!isSunk) {
+      return HIT_COLOR;
+    }
+
+    return SUNK_COLOR;
   }
 
   static parsePosition(element) {
