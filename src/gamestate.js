@@ -107,11 +107,13 @@ export default class GameState {
     const nextPlayer = this.activePlayer();
     if (nextPlayer.isBot) {
       this.#automatedPlayer.playTurn(this);
+    }
+
+    if (this.playerManager.isVersusBot()) {
       //because we only want to trigger this from ui
       //when playing against other human
       this.startTurn();
     }
-
     return true;
   }
 
