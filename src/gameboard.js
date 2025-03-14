@@ -139,4 +139,12 @@ export class GameBoard {
 
     return hitShip.getLength();
   }
+
+  isShipSunkAt(position) {
+    const ship = this.#shipPositions[position.x][position.y];
+    if (ship === null) {
+      return false;
+    }
+    return ship.isSunk();
+  }
 }
